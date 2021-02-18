@@ -1,0 +1,24 @@
+# Minion aliases to make life easy
+
+alias clear_INI_FIN = 'sudo rm -rf /home/pi/Desktop/Minion_pics/INI/* && sudo rm -rf /home/pi/Minion_pics/FIN/*'
+
+alias clear_Minion_pics='sudo rm -rf /home/pi/Desktop/Minion_pics/*.jpg'
+
+alias clear_Minion_data='sudo rm -rf /home/pi/Desktop/Minion_data/*.txt'
+
+alias clear_Minion_tests='sudo rm -rf /home/pi/Desktop/*.jpg && sudo rm -rf /home/pi/Desktop/*.txt'
+
+alias list-Minion-pics='ls /home/pi/Desktop/Minion_pics/'
+
+alias kill-Minion='sudo killall Minion.py shutdown.py python'
+
+alias ifswitch='sudo python /home/pi/Documents/Minion_tools/dhcp-switch.py'
+
+alias RTC-set='sudo python /home/pi/Documents/Minion_tools/RTC-set.py'
+
+alias Minion-off='sudo python /home/pi/Documents/Minion_tools/Shutdown.py'
+
+alias preview-Minion='sudo raspivid -t 0'
+
+alias stay-on='sudo python ~/Documents/Minion_tools/Keep_Me_Alive.py'
+

@@ -1,2 +1,4 @@
-# Minion_3
-Next Generation Minion core software
+# Minion_2.9
+Minion 2.9 readme
+
+HAT Programming guide within AVR/

@@ -1,0 +1,6 @@
+network={
+        ssid="Minion_Hub"
+        psk="ramboat1!"
+        key_mgmt=WPA-PSK
+}
+
