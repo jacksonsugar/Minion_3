@@ -23,8 +23,8 @@ UNUSED_PIN_2 = 2
 MODEM_ON_OFF = 3
 NW_AVL = 4
 UNUSED_PIN_5 = 5
-UNUSED_PIN_6 = 7
-GPS_PWR_ENA = 6
+UNUSED_PIN_6 = 6
+GPS_PWR_ENA = 7
 
 class MinSat():
     dev_on = 0x0A
