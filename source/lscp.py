@@ -68,8 +68,6 @@ if HOST_UP == False:
     print('Minion [{}] not connected to WIFI'.format(numMinion))
     exit(0)
 
-print(numMinion)
-
 Destination = yes_no('Do you wish to save files to {}/Desktop/? [Y/N] : '.format(usrHome))
 
 if Destination == False:
@@ -82,23 +80,20 @@ else:
     Destination = '{}/Desktop/Minion_{}'.format(usrHome,numMinion)
     mkdir_safe(Destination)
 
-print('datatype = ' + dataType)
-
-print(dataType == '')
 
 if dataType == 'custom':
     customFile = raw_input("Please input specific file location:  /")
     os.system('sudo scp -r {}:/{} {}'.format(hostMinion, customFile, Destination))
-
-elif dataType == '' or 'both':
-    os.system('sudo scp -r -T {}:"/home/pi/Desktop/minion_pics/ /home/pi/Desktop/minion_data/" "{}"'.format(hostMinion, Destination))
-#    os.system('sudo scp -r {}:/home/pi/Desktop/minion_data/ {}/'.format(hostMinion, Destination))
 
 elif dataType == 'pics':
     os.system('sudo scp -r {}:/home/pi/Desktop/minion_pics/ {}'.format(hostMinion, Destination))
 
 elif dataType == 'data':
     os.system('sudo scp -r {}:/home/pi/Desktop/minion_data/ {}'.format(hostMinion, Destination))
+
+elif dataType == '' or 'both':
+    os.system('sudo scp -r -T {}:"/home/pi/Desktop/minion_pics/ /home/pi/Desktop/minion_data/" "{}"'.format(hostMinion, Destination))
+#    os.system('sudo scp -r {}:/home/pi/Desktop/minion_data/ {}/'.format(hostMinion, Destination))
 
 else:
     print('Please specify either [pics] or [data]')
