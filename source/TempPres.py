@@ -68,6 +68,8 @@ file_name = "{}/minion_data/{}_TEMPPRES.txt".format(configDir, samp_time)
 
 file = open(file_name,"a+")
 
+file.write("{}_TEMPPRES.txt".format(samp_time))
+
 if iniP30 == True:
 
     Psensor = ms5837.MS5837_30BA() # Default I2C bus is 1 (Raspberry Pi 3)
@@ -82,10 +84,7 @@ if iniP30 == True:
     else:
         Pres_ini = "Broken"
 
-    file.write("T+P MS5837_30BA P30 @ %s\r\n" % samp_time)
-    file.write("Pressure(mbar),Temp(C) \r\n")
-
-    print("Pressure 30: {} Bar").format(Pres_ini)
+    file.write("Pressure(mbar),Temp(C)")
 
 if iniP100 == True:
 
@@ -100,10 +99,7 @@ if iniP100 == True:
     else:
         Pres_ini = "Broken"
 
-    file.write("T+P KellerLD P100 @ %s\r\n" % samp_time)
-    file.write("Pressure(mbar),Temp(C) \r\n")
-
-    print("Pressure 100: {} Bar").format(Pres_ini)
+    file.write("Pressure(mbar),Temp(C)")
 
 if iniTmp == True:
 
@@ -114,9 +110,9 @@ if iniTmp == True:
         print("Error initializing Temperature sensor")
         exit(1)
 
-    file.write("and TempTSYS01")
-    file.write("Pressure(mbar), Temp(C), TempTSYS01(C) \r\n")
+    file.write(", TempTSYS01(C)")
 
+file.write("\r\n")
 file.close()
 
 
@@ -125,34 +121,41 @@ while NumSamples <= TotalSamples:
 
     file = open(file_name,"a")
 
-    if Psensor.read():
+    sensor_string = ''
 
-        if iniTmp == True:
+    if iniP100 or iniP30 == True:
 
-            if not sensor_temp.read():
-                print("Error reading sensor")
-                iniTmp = False
-
-            print("Temperature_accurate: %0.2f C" % sensor_temp.temperature())
-
-            file.write("{},{},{}\n".format(Psensor.pressure(), Psensor.temperature(), sensor_temp.temperature()))
+        if Psensor.read():
+            Ppressure = Psensor.pressure()
+            Ptemperature = Psensor.temperature()
+            Pres_data = "{},{},".format(Ppressure, Ptemperature)
+            print("Pressure sensor data: {}".format(Pres_data))
+            sensor_string = "{}{}".format(sensor_string,Pres_data)
 
         else:
+            print('Pressure Sensor ded')
+            file.write('Pressure Sensor fail')
+            abortMission(configLoc)
+        
+        if Ppressure >= MAX_Depth:
+            file.write("Minion Exceeded Depth Maximum!")
+            abortMission(configLoc)
 
-            file.write("{},{}\n".format(Psensor.pressure(), Psensor.temperature()))
 
-    else:
-        print('Pressure Sensor ded')
-        file.write('Pressure Sensor fail')
-        abortMission(configLoc)
-      
-    Pres_ini = Psensor.pressure()
+    if iniTmp == True:
 
-    print(Pres_ini)
+        if not sensor_temp.read():
+            print("Error reading sensor")
+            iniTmp = False
 
-    if Pres_ini >= MAX_Depth:
-        file.write("Minion Exceeded Depth Maximum!")
-        abortMission(configLoc)
+        Temp_acc = sensor_temp.temperature()
+
+        print("Temperature_accurate: {} C".format(Temp_acc))
+
+        sensor_string = '{}{}'.format(sensor_string, Temp_acc)
+
+    
+    file.write("{}\n".format(sensor_string))
 
     NumSamples = NumSamples + 1
 

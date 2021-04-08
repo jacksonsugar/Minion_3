@@ -32,7 +32,7 @@ class MinSat():
     gps_com_port = ''
     modem_com_port = ''
     gps_baud = 9600
-    modem_baud = 9600
+    modem_baud = 19200
 
     def __init__(self,gps_com_port,gps_baud,modem_com_port,modem_baud):
         """Iridium Short Burst Data and GPS Support for the Minion.

@@ -11,10 +11,13 @@ import configparser
 import sys
 
 BURN = 33
+data_rec = 16
 
 samp_count = 1
 
 NumSamples = 0
+
+BURN_WIRE = False
 
 ps_test = "pgrep -a python"
 
@@ -83,6 +86,10 @@ TotalSamples = Stime*60*60*Srate
 
 time.sleep(1)
 
+if len(os.listdir('{}/minion_data/FIN'.format(configDir))) == 0:
+    BURN_WIRE = True
+    GPIO.output(BURN,1)
+
 file = open(file_name,"a+")
 
 if iniP30 == True:
@@ -143,14 +150,14 @@ if iniP100 == False and iniP30 == False:
 if __name__ == '__main__':
 
     if Pres_ini == "Broken":
-        GPIO.output(Burn,1)
         abortMission(configLoc)
         os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
 
     if Abort == True:
-        GPIO.output(Burn,1)
+        GPIO.output(BURN,1)
+        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
 
-    if Pres_ini >= 1500:
+    if BURN_WIRE == True:
         GPIO.output(BURN,1)
 
         if iniImg == True:
@@ -163,7 +170,7 @@ if __name__ == '__main__':
             os.system('sudo python /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
 
         # Spew readings
-        while(NumSamples <= TotalSamples and Pres_ini >= 1500):
+        while(NumSamples <= TotalSamples):
 
             file = open(file_name,"a")
 
@@ -211,6 +218,6 @@ if __name__ == '__main__':
         os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
         GPIO.output(data_rec, 0)
 
-    else:
 
+    else:
         os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')

@@ -32,8 +32,12 @@ if okay and ret_data.valid_position:
     display_gps_resp_struct(ret_data)
 elif not okay and  not ret_data.valid_position:
     print("Could not acquire a valid GPS Position.")
+    print("Second Attempt")
+    (okay,ret_data) = m1.sbd_send_position(verbose=False,maintain_gps_pwr=True,gps_timeout=120)
 elif not okay and ret_data.valid_position:
     print("Valid GPS Position Acquired - Could Not Transmit the Position via Irdium.")
     display_gps_resp_struct(ret_data)
+    print("Second Attempt")
+    (okay,ret_data) = m1.sbd_send_position(verbose=False,maintain_gps_pwr=True,gps_timeout=120)
     
 m1.gps_pwr(m1.dev_off)

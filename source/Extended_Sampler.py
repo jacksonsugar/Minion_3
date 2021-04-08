@@ -84,6 +84,8 @@ time.sleep(1)
 
 file = open(file_name,"a+")
 
+file.write("{}_TEMPPRES.txt".format(samp_time))
+
 if iniP30 == True:
 
     Psensor = ms5837.MS5837_30BA() # Default I2C bus is 1 (Raspberry Pi 3)
@@ -98,11 +100,7 @@ if iniP30 == True:
     else:
         Pres_ini = "Broken"
 
-    file.write("T+P MS5837_30BA P30 @ %s\r\n" % samp_time)
-    file.write("Pressure(mbar),Temp(C) \r\n")
-
-    print("Pressure 30: {} Bar").format(Pres_ini)
-
+    file.write("Pressure(mbar),Temp(C)")
 
 if iniP100 == True:
 
@@ -113,14 +111,11 @@ if iniP100 == True:
         exit(1)
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = P100sensor.pressure()
+        Pres_ini = Psensor.pressure()
     else:
         Pres_ini = "Broken"
 
-    file.write("T+P KellerLD P100 @ %s\r\n" % samp_time)
-    file.write("Pressure(mbar),Temp(C) \r\n")
-
-    print("Pressure 100: {} Bar").format(Pres_ini)
+    file.write("Pressure(mbar),Temp(C)")
 
 if iniTmp == True:
 
@@ -131,64 +126,68 @@ if iniTmp == True:
         print("Error initializing Temperature sensor")
         exit(1)
 
-    file.write("and TempTSYS01")
-    file.write("Pressure(mbar), Temp(C), TempTSYS01(C) \r\n")
+    file.write(", TempTSYS01(C)")
 
+file.write("\r\n")
 file.close()
 
 
 if __name__ == '__main__':
 
-    if Pres_ini == "Broken":
-        file.write("Sensor Malfunction! Returning to surface.")
-        abortMission(configLoc)
 
-    else:
+    if iniImg == True:
+        os.system('sudo python /home/pi/Documents/Minion_scripts/Minion_image_IF.py &')
 
-        if iniImg == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/Minion_image_IF.py &')
+    if iniO2 == True:
+        os.system('sudo python /home/pi/Documents/Minion_scripts/OXYBASE_RS232_IF.py &')
 
-        if iniO2 == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/OXYBASE_RS232_IF.py &')
+    if iniAcc == True:
+        os.system('sudo python /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
 
-        if iniAcc == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
+    # Spew readings
+    while NumSamples <= TotalSamples:
 
-        # Spew readings
-        while(NumSamples <= TotalSamples):
+        file = open(file_name,"a")
 
-            file = open(file_name,"a")
+        sensor_string = ''
+
+        if iniP100 or iniP30 == True:
 
             if Psensor.read():
-
-                if iniTmp == True:
-
-                    if not sensor_temp.read():
-                        print("Error reading sensor")
-                        iniTmp = False
-
-                    print("Temperature_accurate: %0.2f C" % sensor_temp.temperature())
-
-                    file.write("{},{},{}\n".format(Psensor.pressure(), Psensor.temperature(), sensor_temp.temperature()))
-
-                else:
-
-                    file.write("{},{}\n".format(Psensor.pressure(), Psensor.temperature()))
+                Ppressure = Psensor.pressure()
+                Ptemperature = Psensor.temperature()
+                Pres_data = "{},{},".format(Ppressure, Ptemperature)
+                print("Pressure sensor data: {}".format(Pres_data))
+                sensor_string = "{}{}".format(sensor_string,Pres_data)
 
             else:
-                print('Sensor ded')
-                file.write('Sensor fail')
+                print('Pressure Sensor ded')
+                file.write('Pressure Sensor fail')
                 abortMission(configLoc)
-              
-            Pres_ini = Psensor.pressure()
-
-            if Pres_ini >= MAX_Depth:
+            
+            if Ppressure >= MAX_Depth:
                 file.write("Minion Exceeded Depth Maximum!")
                 abortMission(configLoc)
 
-            NumSamples = NumSamples + 1
 
-            time.sleep(Sf)
+        if iniTmp == True:
 
-        file.close()
-        GPIO.output(data_rec, 0)
+            if not sensor_temp.read():
+                print("Error reading sensor")
+                iniTmp = False
+
+            Temp_acc = sensor_temp.temperature()
+
+            print("Temperature_accurate: {} C".format(Temp_acc))
+
+            sensor_string = '{}{}'.format(sensor_string, Temp_acc)
+
+        
+        file.write("{}\n".format(sensor_string))
+
+        NumSamples = NumSamples + 1
+
+        time.sleep(Sf)
+
+    file.close()
+    GPIO.output(data_rec, 0)

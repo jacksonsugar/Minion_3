@@ -20,7 +20,7 @@ def yes_no(answer):
         elif choice in no:
             return False
         else:
-            print "Please respond with 'yes' or 'no'\n"
+            print("Please respond with 'yes' or 'no'\n")
 
 os.system('sudo apt-get -y remove fake-hwclock')
 os.system('sudo update-rc.d -f fake-hwclock remove')
@@ -65,4 +65,4 @@ os.system('sudo python /home/pi/Documents/Minion_tools/dhcp-switch.py')
 
 os.system('sudo reboot now')
 
-print "DONE!"
+print("DONE!")
