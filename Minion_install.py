@@ -11,7 +11,7 @@ import RPi.GPIO as GPIO
 import time
 import os
 
-print "Welcome to the Minion installer 3! \n"
+print("Welcome to the Minion installer 3! \n")
 
 ini_dir = os.getcwd()
 
@@ -139,6 +139,17 @@ if USBdata == True:
 
     os.system('sudo cp source/Minion_config.ini /media/Data/')
 
+    # Add IP address to config file
+    with open('/media/Data/Minion_config.ini', 'r') as file :
+        Minion_conf = file.read()
+
+    # Replace the directory
+    Minion_conf = Minion_conf.replace('XXX', '{}'.format(IP_addr))
+
+    # Write the file out again
+    with open('/media/Data/Minion_config.ini', 'w') as file:
+        file.write(Minion_conf)
+
     os.system("echo '# Minion IP:192.168.0.{}' >> /media/Data/Minion_config.ini".format(IP_addr))
 
     # Open Minion config file
@@ -158,6 +169,18 @@ elif USBdata == False:
     os.system('sudo mkdir /home/pi/Desktop/minion_pics /home/pi/Desktop/minion_data')
     os.system('sudo mkdir  /home/pi/Desktop/minion_data/INI /home/pi/Desktop/minion_data/FIN')
     os.system('sudo cp source/Minion_config.ini /home/pi/Desktop')
+
+    # Add IP address to config file
+    with open('/home/pi/Desktop/Minion_config.ini', 'r') as file :
+        Minion_conf = file.read()
+
+    # Replace the directory
+    Minion_conf = Minion_conf.replace('XXX', '{}'.format(IP_addr))
+
+    # Write the file out again
+    with open('/home/pi/Desktop/Minion_config.ini', 'w') as file:
+        file.write(Minion_conf)
+
     time.sleep(3)
     os.system("echo '# Minion IP:192.168.0.{}' >> /home/pi/Desktop/Minion_config.ini".format(IP_addr))
 
