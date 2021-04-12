@@ -5,8 +5,21 @@ import sys
 import os
 import math
 import random
+import configparser
 #Load the shared object file for GPIO Drivers
 gpio =  CDLL('/home/pi/Documents/Minion_scripts/SC16IS752GPIO.so')
+
+DEV_ID = str('01')
+
+data_config = configparser.ConfigParser()
+data_config.read('/home/pi/Documents/Minion_scripts/Data_config.ini')
+
+configDir = data_config['Data_Dir']['Directory']
+configLoc = '{}/Minion_config.ini'.format(configDir)
+config = configparser.ConfigParser()
+config.read(configLoc)
+
+MINION_ID = str(config['MINION']['Number']).zfill(3)
 
 #Definitions
 OUT = 1
@@ -546,10 +559,12 @@ class MinSat():
             'verbose' : False,}
 
         options.update(kwargs) #Now update the dictionary with any duplicate keys from kwargs
-        
+
         gpsData = self.gps_get_position(verbose=options['verbose'],gps_timeout=options['gps_timeout'],ird_sig_timeout=options['ird_sig_timeout'],maintain_gps_pwr=options['maintain_gps_pwr'],maintain_ird_pwr=options['maintain_ird_pwr'])
-        
-        gpsDataStr = "{:04}/{:02}/{:02} {:02}:{:02}:{:02},{:.6f},{:.6f}".format(
+
+        gpsDataStr = "{},{},{:04},{:02},{:02},{:02},{:02},{:02},{:.6f},{:.6f}".format(
+            DEV_ID,
+            MINION_ID,
             gpsData.tm_year,
             gpsData.tm_mon,
             gpsData.tm_mday,
@@ -559,7 +574,7 @@ class MinSat():
             gpsData.latitude,
             gpsData.longitude,
             )
-
+        print("SBD msg = ".format(gpsDataStr))
         if gpsData. valid_position == True:
             if options['verbose'] == True:
                 print("GPS Position Acquired.")
