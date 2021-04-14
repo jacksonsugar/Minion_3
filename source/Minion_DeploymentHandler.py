@@ -105,11 +105,7 @@ print("Sample rate (hours) - {}".format(Srate))
 
 TotalSamples = (((Ddays*24)+Dhours))/Srate
 
-Samples_left = TotalSamples - float(len(os.listdir('{}/minion_pics'.format(configDir))))
-
 print("Total Cycles ------- {}".format(TotalSamples))
-
-print("Cycles left -------- {}".format(Samples_left))
 
 ifswitch = "sudo python /home/pi/Documents/Minion_tools/dhcp-switch.py"
 
@@ -132,7 +128,7 @@ if __name__ == '__main__':
 
     elif len(os.listdir('{}/minion_pics'.format(configDir))) >= TotalSamples or Abort == True:
         GPIO.output(IO328, 0)
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler.py &')
+        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
 
     else:
         if iniImg == True:

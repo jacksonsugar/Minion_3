@@ -137,7 +137,7 @@ if iniTmp == True:
 
 file.close()
 
-if iniP100 == False and iniP30 == False:
+if iniP100 and iniP30 == False:
     Pres_ini = 2000
 
 if __name__ == '__main__':
