@@ -3,7 +3,7 @@
 # Quick data recording script for the ADXL345
 
 import os
-import Adafruit_ADXL345
+from adxl345 import ADXL345
 import configparser
 import pickle
 
@@ -29,13 +29,12 @@ try :
 except :
     Stime = float(.2)
 
-TotalSamples = Stime*60*100
+TotalSamples = Stime*60*100*4
 
 #Configure ADXL345
-accel = Adafruit_ADXL345.ADXL345()
-accel.set_data_rate(Adafruit_ADXL345.ADXL345_DATARATE_100_HZ)
+accel = ADXL345()
 
-firstp = open("timesamp.pkl","rb")
+firstp = open("/home/pi/Documents/Minion_scripts/timesamp.pkl","rb")
 samp_time = pickle.load(firstp)
 
 for dataNum in os.listdir('{}/minion_data/'.format(configDir)):
@@ -44,7 +43,7 @@ for dataNum in os.listdir('{}/minion_data/'.format(configDir)):
 
 samp_time = "{}-{}".format(samp_count, samp_time)
 
-file_name = "/home/pi/Documents/minion_data/%s_ACC.txt" % samp_time
+file_name = "/home/pi/Desktop/minion_data/%s_ACC.txt" % samp_time
 
 file = open(file_name,"a+")
 
@@ -52,8 +51,13 @@ file.write("%s\r\n" % samp_time)
 file.write("X,Y,Z = +/- 2g\r\n")
 
 while NumSamples <= TotalSamples:
-    # Read the X, Y, Z axis acceleration values and print them.
-    x, y, z = accel.read()
-    file.write('{0},{1},{2}\n'.format(x, y, z))
-    NumSamples = NumSamples + 1
+    try:
+        # Read the X, Y, Z axis acceleration values and print them.
+        axes = accel.getAxes(True)
+        print('{},{},{}'.format(axes['x'],axes['y'],axes['z']))
+        file.write('{},{},{}\n'.format(axes['x'], axes['y'], axes['z']))
+        NumSamples = NumSamples + 1
+        time.sleep(.05)
 
+    except:
+        print('acc broken')

@@ -22,8 +22,6 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(light, GPIO.OUT)
 GPIO.setup(power, GPIO.OUT)
 
-pLED = GPIO.PWM(LED, 200)
-
 def str2bool(v):
     return v.lower() in ("yes","true",'1','t')
 
@@ -78,6 +76,7 @@ def picture(configDir, NumSamples, RECOVER):
         firstp = open("/home/pi/Documents/Minion_scripts/timesamp.pkl","rb")
         samp_time = pickle.load(firstp)
 
+        GPIO.output(light, 1)
         camera.resolution = (2592, 1944)
         camera.framerate = 15
         camera.start_preview()
@@ -96,26 +95,24 @@ def picture(configDir, NumSamples, RECOVER):
         time.sleep(1)
         print("Image : {}".format(samp_time))
         camera.stop_preview()
+        GPIO.output(light, 0)
 
     except:
         camera.stop_preview()
+        GPIO.output(light, 0)
         print("Camera Error")
 
 
-if __name__ == '__main__':
+picture(configDir, NumSamples, RECOVER)
+# Spew readings
+while NumSamples <= TotalSamples:
 
 
-    # Spew readings
-    while NumSamples <= TotalSamples:
+    NumSamples = NumSamples + 1
 
-        update_time()
+    time.sleep(Srate*60)
 
-        pLED.start(40)
+    update_time()
 
-        picture(configDir, NumSamples, RECOVER)
+    picture(configDir, NumSamples, RECOVER)
 
-        pLED.stop()
-
-        NumSamples = NumSamples + 1
-
-        time.sleep(Srate*60)

@@ -24,7 +24,7 @@ ps_test = "pgrep -a python"
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(BURN, GPIO.OUT)
-GPIO.output(BURN, 0)
+GPIO.output(BURN, 1)
 
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
@@ -64,6 +64,8 @@ iniTmp = str2bool(config['Sampling_scripts']['Temperature'])
 iniO2  = str2bool(config['Sampling_scripts']['Oxybase'])
 iniAcc = str2bool(config['Sampling_scripts']['ACC_100Hz'])
 
+MAX_Depth = int(config['Mission']['MAX_Depth'])
+
 firstp = open("/home/pi/Documents/Minion_scripts/timesamp.pkl","rb")
 samp_time = pickle.load(firstp)
 
@@ -74,7 +76,7 @@ for dataNum in os.listdir('{}/minion_data/FIN/'.format(configDir)):
 samp_time = "{}-{}".format(samp_count, samp_time)
 
 Stime = float(config['Final_Samples']['hours'])
-Srate = float(config['Final_Samples']['TempPres_sample_rate'])    
+Srate = float(config['Final_Samples']['TempPres_sample_rate'])
 
 file_name = "{}/minion_data/FIN/{}_TEMPPRES-FIN.txt".format(configDir, samp_time)
 
@@ -153,11 +155,11 @@ if __name__ == '__main__':
         abortMission(configLoc)
         os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
 
-    if Abort == True:
-        GPIO.output(BURN,1)
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
+#    if Abort == True:
+#        GPIO.output(BURN,1)
+#        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
 
-    if BURN_WIRE == True:
+    if len(os.listdir('{}/minion_data/FIN/'.format(configDir))) <= 1:
         GPIO.output(BURN,1)
 
         if iniImg == True:
@@ -190,7 +192,7 @@ if __name__ == '__main__':
                     print('Pressure Sensor ded')
                     file.write('Pressure Sensor fail')
                     abortMission(configLoc)
-                
+
                 if Ppressure >= MAX_Depth:
                     file.write("Minion Exceeded Depth Maximum!")
                     abortMission(configLoc)
@@ -207,7 +209,7 @@ if __name__ == '__main__':
 
                 sensor_string = '{}{}'.format(sensor_string, Temp_acc)
 
-            
+
             file.write("{}\n".format(sensor_string))
 
             NumSamples = NumSamples + 1
@@ -215,9 +217,12 @@ if __name__ == '__main__':
             time.sleep(Sf)
 
 
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
+        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py &')
         GPIO.output(data_rec, 0)
 
 
     else:
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
+        GPIO.output(BURN,1)
+        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py &')
+
+    time.sleep(60)

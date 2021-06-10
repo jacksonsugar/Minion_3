@@ -17,6 +17,8 @@ samp_count = 1
 
 NumSamples = 0
 
+IO328 = 29
+
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(BURN, GPIO.OUT)
@@ -27,16 +29,31 @@ GPIO.output(data_rec, 1)
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
+def kill_sampling(scriptNames):
+
+    for script in scriptNames:
+        os.system("sudo pkill -9 -f {}".format(script))
+
 def abortMission(configLoc):
+
+    kill_sampling(scriptNames)
+
+    print("Max Depth Exceeded!")
 
     abortConfig = configparser.ConfigParser()
     abortConfig.read(configLoc)
     abortConfig.set('Mission','Abort','1')
-    with open(config,'wb') as abortFile:
+    with open(configLoc,'wb') as abortFile:
         abortConfig.write(abortFile)
 
-    GPIO.output(IO328, 0)
-    os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler.py &')
+    GPIO.setup(29, GPIO.OUT)
+    GPIO.output(29, 0)
+    os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
+
+    time.sleep(60)
+    exit(0)
+
+scriptNames = ["TempPres.py", "Minion_image.py","Minion_image_IF.py","OXYBASE_RS232.py","ACC_100Hz.py","Recovery_Sampler.py","TempPres_IF.py","OXYBASE_RS232_IF.py","ACC_100Hz_IF.py","Iridium_gps.py","Iridium_data.py"]
 
 data_config = configparser.ConfigParser()
 data_config.read('/home/pi/Documents/Minion_scripts/Data_config.ini')
@@ -46,7 +63,7 @@ configLoc = '{}/Minion_config.ini'.format(configDir)
 config = configparser.ConfigParser()
 config.read(configLoc)
 MAX_Depth = float(config['Mission']['Max_Depth'])
-MAX_Depth = MAX_Depth*100.4  # Convert from meters to mBar
+#MAX_Depth = MAX_Depth*100.4  # Convert from meters to mBar
 Abort = str2bool(config['Mission']['Abort'])
 iniImg = str2bool(config['Sampling_scripts']['Image'])
 iniP30 = str2bool(config['Sampling_scripts']['30Ba-Pres'])
@@ -56,9 +73,9 @@ iniO2  = str2bool(config['Sampling_scripts']['Oxybase'])
 iniAcc = str2bool(config['Sampling_scripts']['ACC_100Hz'])
 
 if Abort == True:
-        GPIO.output(IO328, 0)
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler.py &')
-
+        GPIO.setup(29, GPIO.OUT)
+        GPIO.output(29, 0)
+        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
 
 firstp = open("/home/pi/Documents/Minion_scripts/timesamp.pkl","rb")
 samp_time = pickle.load(firstp)
@@ -70,7 +87,7 @@ for dataNum in os.listdir('{}/minion_data/INI/'.format(configDir)):
 samp_time = "{}-{}".format(samp_count, samp_time)
 
 Stime = float(config['Initial_Samples']['hours'])
-Srate = float(config['Initial_Samples']['TempPres_sample_rate'])    
+Srate = float(config['Initial_Samples']['TempPres_sample_rate'])
 
 file_name = "{}/minion_data/INI/{}_TEMPPRES-INI.txt".format(configDir, samp_time)
 
@@ -115,7 +132,7 @@ if iniP100 == True:
     else:
         Pres_ini = "Broken"
 
-    file.write("Pressure(mbar),Temp(C)")
+    file.write("Pressure(Bar),Temp(C)")
 
 if iniTmp == True:
 
@@ -164,7 +181,7 @@ if __name__ == '__main__':
                 print('Pressure Sensor ded')
                 file.write('Pressure Sensor fail')
                 abortMission(configLoc)
-            
+
             if Ppressure >= MAX_Depth:
                 file.write("Minion Exceeded Depth Maximum!")
                 abortMission(configLoc)
@@ -182,7 +199,7 @@ if __name__ == '__main__':
 
             sensor_string = '{}{}'.format(sensor_string, Temp_acc)
 
-        
+
         file.write("{}\n".format(sensor_string))
 
         NumSamples = NumSamples + 1
@@ -190,4 +207,6 @@ if __name__ == '__main__':
         time.sleep(Sf)
 
     file.close()
+    kill_sampling(scriptNames)
+    GPIO.setup(data_rec, GPIO.OUT)
     GPIO.output(data_rec, 0)

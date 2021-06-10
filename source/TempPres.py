@@ -15,16 +15,28 @@ samp_count = 1
 def str2bool(v):
     return v.lower() in ("yes","true",'1','t')
 
+def kill_sampling(scriptNames):
+
+    for script in scriptNames:
+        os.system("sudo pkill -9 -f {}".format(script))
+
 def abortMission(configLoc):
+
+#    kill_sampling(scriptNames)
+
+    print("Max Depth Exceeded!")
 
     abortConfig = configparser.ConfigParser()
     abortConfig.read(configLoc)
     abortConfig.set('Mission','Abort','1')
-    with open(config,'wb') as abortFile:
+    with open(configLoc,'wb') as abortFile:
         abortConfig.write(abortFile)
+    GPIO.setup(29, GPIO.OUT)
+    GPIO.output(29, 0)
+    os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
+    exit(0)
 
-    GPIO.output(IO328, 0)
-    os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler.py &')
+scriptNames = ["Minion_image.py","Minion_image_IF.py","OXYBASE_RS232.py","ACC_100Hz.py","Recovery_Sampler_Burn.py","OXYBASE_RS232_IF.py","ACC_100Hz_IF.py","Iridium_gps.py","Iridium_data.py"]
 
 data_config = configparser.ConfigParser()
 data_config.read('/home/pi/Documents/Minion_scripts/Data_config.ini')
@@ -36,7 +48,7 @@ configLoc = '{}/Minion_config.ini'.format(configDir)
 
 config.read(configLoc)
 MAX_Depth = float(config['Mission']['Max_Depth'])
-MAX_Depth = MAX_Depth*100.4  # Convert from meters to mBar
+#MAX_Depth = MAX_Depth*100.4  # Convert from meters to mBar
 iniP30 = str2bool(config['Sampling_scripts']['30Ba-Pres'])
 iniP100 = str2bool(config['Sampling_scripts']['100Ba-Pres'])
 iniTmp = str2bool(config['Sampling_scripts']['Temperature'])
