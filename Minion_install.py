@@ -112,7 +112,7 @@ else:
 USBdata = yes_no('Do you wish to configure a USB storage device? (NTFS file system) [Y/N]: ')
 os.system('sudo mkdir /home/pi/Documents/Minion_scripts /home/pi/Documents/Minion_tools')
 # Move the deployment handler so it knows where to look for config file
-os.system('sudo cp source/Data_config.ini source/Minion_DeploymentHandler.py source/Minion_image.py source/Extended_Sampler.py source/Recovery_Sampler.py source/OXYBASE_RS232.py source/TempPres.py source/ACC_100Hz.py source/ACC_100Hz_IF.py source/TempPres_IF.py source/Minion_image_IF.py source/OXYBASE_RS232_IF.py source/minsat.py source/Minsat/SC16IS752GPIO.so source/Iridium_gps.py source/Iridium_data.py /home/pi/Documents/Minion_scripts')
+os.system('sudo cp source/Data_config.ini source/Minion_DeploymentHandler.py source/Minion_image.py source/Extended_Sampler.py source/Recovery_Sampler.py source/OXYBASE_RS232.py source/TempPres.py source/ACC_100Hz.py source/ACC_100Hz_IF.py source/Minion_image_IF.py source/OXYBASE_RS232_IF.py source/minsat.py source/Minsat/SC16IS752GPIO.so source/Iridium_gps.py source/Iridium_data.py /home/pi/Documents/Minion_scripts')
 
 if USBdata == True:
 
