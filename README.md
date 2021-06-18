@@ -1,4 +1,4 @@
-# Minion_2.9
-Minion 2.9 readme
+# Minion_3
+Minion 3 readme
 
 HAT Programming guide within AVR/
