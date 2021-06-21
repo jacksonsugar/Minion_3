@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Minion Testing</title>
+<title>Minion XXX Testing</title>
 
 <style>
     h1 {text-align: center;}
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<h1> Take a test image! </h1>
+<h1> Take a test image on Minion XXX! </h1>
 <br>
 <br>
 <form method='post' action=''>
