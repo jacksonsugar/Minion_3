@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Submit 35 Config</title>
+<title>Submit XXX Config</title>
 
 <style>
     body {
@@ -132,7 +132,7 @@ fwrite($myfile, $Sampling_scripts);
 fclose($myfile);
 ?>
 
-<h2>Config saved!</h2>
+<h2>Config XXX saved!</h2>
 
 <form action="/form_submitted.php" method="post">
 <input type="submit" value="Write Minion Config!">
