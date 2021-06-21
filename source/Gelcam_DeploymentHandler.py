@@ -93,7 +93,8 @@ except:
 Srate = float(config['Sleep_cycle']['Minion_sleep_cycle'])
 Abort = str2bool(config['Mission']['Abort'])
 iniImg = str2bool(config['Sampling_scripts']['Image'])
-iniTpp = str2bool(config['Sampling_scripts']['TempPres'])
+iniP30 = str2bool(config['Sampling_scripts']['30Ba-Pres'])
+iniP100 = str2bool(config['Sampling_scripts']['100Ba-Pres']
 iniTmp = str2bool(config['Sampling_scripts']['Temperature'])
 iniO2  = str2bool(config['Sampling_scripts']['Oxybase'])
 iniAcc = str2bool(config['Sampling_scripts']['ACC_100Hz'])
@@ -131,7 +132,7 @@ if __name__ == '__main__':
 #        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler.py &')
 #
 #    else:
-    if iniTpp == True:
+    if iniP30 == True or iniP100:
         os.system('sudo python /home/pi/Documents/Minion_scripts/TempPres.py &')
 
     if iniImg == True:
