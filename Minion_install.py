@@ -259,6 +259,8 @@ os.system('sudo rm -r /var/www/html/index.nginx-debian.html')
 
 os.system('sudo chown -R www-data /var/www/html/')
 
+os.system('sudo chmod +x /var/www/html/*')
+
 os.system('sudo sed -i "$ a www-data ALL=(ALL) NOPASSWD:ALL" /etc/sudoers')
 
 # Reboot to finish kernel module config
