@@ -61,26 +61,6 @@ rclocal = rclocal.replace('sudo python /home/pi/Documents/Minion_tools/RTC_Finis
 # Write the file out again
 with open('/etc/rc.local', 'w') as file:
     file.write(rclocal)
-    
-# Set up website
-os.system('sudo apt-get install -y nginx php-fpm php-zip')
-
-os.system('sudo /etc/init.d/nginx start')
-
-# Open rc.local
-with open('/etc/nginx/sites-enabled/default', 'r') as file :
-    nginx = file.read()
-
-# Replace the RTC string
-nginx = nginx.replace('index index.html index.htm', 'index index.php index.html index.htm')
-
-nginx = nginx.replace('#location ~ \.php$ {','location ~ \.php$ {')
-
-nginx = nginx.replace('
-
-# Write the file out again
-with open('/etc/nginx/sites-enabled/default', 'w') as file:
-    file.write(nginx)
 
 os.system('sudo python /home/pi/Documents/Minion_tools/dhcp-switch.py')
 
