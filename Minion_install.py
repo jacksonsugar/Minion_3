@@ -193,7 +193,7 @@ else:
 # Get updates
 #os.system('sudo apt-get update && sudo apt-get upgrade -y') 
 # Get needed packages
-os.system('sudo apt-get install build-essential python-smbus i2c-tools avrdude -y')
+os.system('sudo apt-get install -y build-essential python-smbus i2c-tools avrdude nginx php-fpm php-zip')
 # raspi-config
 #os.system('sudo raspi-config nonint do_change_locale en_IS.UTF-8')
 os.system('sudo raspi-config nonint do_boot_behaviour B2')
@@ -245,6 +245,21 @@ os.system('sudo cp -r source/drivers/tsys01-python/tsys01 source/drivers/ms5837-
 os.system("sudo sed -i '/# Print the IP/isudo python /home/pi/Documents/Minion_tools/RTC_Finish.py\n\n' /etc/rc.local")
 
 os.system("sudo chmod +x /etc/rc.local")
+
+# Set up website
+os.system('sudo /etc/init.d/nginx start')
+
+os.system('sudo cp source/web_iface/sites-enabled/default /etc/nginx/sites-enabled/')
+
+os.system('sudo /etc/init.d/nginx reload')
+
+os.system('sudo cp source/web_iface/* /var/www/html/')
+
+os.system('sudo rm -r /var/www/html/index.nginx-debian.html')
+
+os.system('sudo chown -R www-data /var/www/html/')
+
+os.system('sudo sed -i "$ a\nwww-data ALL=(ALL) NOPASSWD:ALL" /etc/sudoers')
 
 # Reboot to finish kernel module config
 os.system('sudo shutdown now')
