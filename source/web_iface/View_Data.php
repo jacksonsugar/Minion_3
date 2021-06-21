@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View Data</title>
+<title>View Data #XXX</title>
 <style>
     h1 {text-align: center;}
     body {
@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<h1> MINION DATA </h1>
+<h1> MINION XXX DATA </h1>
 
 <fieldset>
 <h2> minion_data/ </h2>
@@ -91,7 +91,7 @@ echo $output;
 <?php
 if(isset($_POST['download'])){
 $dir = '/home/pi/Desktop/';
-$zip_file = 'MinionData.zip';
+$zip_file = 'MinionXXX.zip';
 
 // Get real path for our folder
 $rootPath = realpath($dir);
