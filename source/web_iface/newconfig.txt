@@ -1,0 +1,41 @@
+#This is the Minion config file.
+
+[MINION]
+Number = 35
+
+[Mission]
+Abort = 0
+Max_Depth = 300
+
+[Initial_Samples]
+hours = 2
+Camera_sample_rate = 10
+TempPres_sample_rate = 5
+Oxygen_sample_rate = 1
+
+[Final_Samples]
+hours = 1
+Camera_sample_rate = 10
+TempPres_sample_rate = 5
+Oxygen_sample_rate = 1
+
+[Deployment_Time]
+days = 2
+hours = 12
+
+[Sleep_cycle]
+Minion_sleep_cycle = .25
+
+[Data_Sample]
+Minion_sample_time = Camera
+Minion_sample_rate = 5
+Oxygen_sample_rate = 1
+
+[Sampling_scripts]
+Image = True
+30Ba-Pres = False
+100Ba-Pres = False
+Temperature = False
+Oxybase = False
+ACC_100Hz = False
+
