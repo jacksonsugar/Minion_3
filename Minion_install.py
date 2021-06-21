@@ -254,6 +254,24 @@ os.system('sudo cp source/web_iface/* /var/www/html/')
 
 os.system('sudo rm -r /var/www/html/index.nginx-debian.html')
 
+webdir = '/var/www/html/'
+for filename in os.listdir(webdir):
+
+    if filename.endswith(".php") or filename.endswith(".py") or filename.endswith(".html"):
+        webfile = os.path.join(webdir, filename)
+        # Add IP address to web files
+        with open(webfile, 'r') as file :
+            web_conf = file.read()
+
+        # Replace the values
+        web_conf = web_conf.replace('XXX', '{}'.format(IP_addr))
+
+        # Write the file out again
+        with open(webfile, 'w') as file:
+            file.write(web_conf)
+    else:
+        continue
+
 os.system('sudo chown -R www-data /var/www/html/')
 
 os.system('sudo chmod +x /var/www/html/*')
