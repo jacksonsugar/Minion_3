@@ -42,7 +42,7 @@ def picture():
         camera.framerate = 15
         camera.start_preview()
         time.sleep(10)
-        camera.capture('/home/pi/testimage.jpg'.format(mNumber))
+        camera.capture('/home/pi/testimage.jpg')
         time.sleep(5)
     except:
         print("Camera error")
