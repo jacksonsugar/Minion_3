@@ -1,6 +1,6 @@
 # Minion aliases to make life easy
 
-alias clear_INI_FIN = 'sudo rm -rf /home/pi/Desktop/Minion_pics/INI/* && sudo rm -rf /home/pi/Minion_pics/FIN/*'
+alias clear_INI_FIN='sudo rm -rf /home/pi/Desktop/Minion_pics/INI/* && sudo rm -rf /home/pi/Minion_pics/FIN/*'
 
 alias clear_Minion_pics='sudo rm -rf /home/pi/Desktop/Minion_pics/*.jpg'
 
