@@ -123,15 +123,6 @@ scriptNames = ["TempPres.py", "Minion_image.py","Minion_image_IF.py","OXYBASE_RS
 
 if __name__ == '__main__':
 
-# Gelcam Edits
-#    if len(os.listdir('{}/minion_pics'.format(configDir))) == 0 and len(os.listdir('{}/minion_data/INI'.format(configDir))) == 0:
-#        os.system('sudo python /home/pi/Documents/Minion_scripts/Extended_Sampler.py &')
-#
-#    elif len(os.listdir('{}/minion_pics'.format(configDir))) >= TotalSamples or Abort == True:
-#        GPIO.output(IO328, 0)
-#        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler.py &')
-#
-#    else:
     if iniP30 == True or iniP100:
         os.system('sudo python /home/pi/Documents/Minion_scripts/TempPres.py &')
 
