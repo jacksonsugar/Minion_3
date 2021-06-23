@@ -11,6 +11,6 @@ GPIO.setup(wifi, GPIO.OUT)
 print('Goodbye')
 GPIO.output(wifi, 0)
 time.sleep(5)
-#os.system('sudo shutdown now')
+os.system('sudo shutdown now')
 
 
