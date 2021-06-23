@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View Data #XXX</title>
+<title>View Data #48</title>
 <style>
     h1 {text-align: center;}
     body {
@@ -13,16 +13,19 @@
 </style>
 </head>
 <body>
-<h1> MINION XXX DATA </h1>
+<h1> MINION 48 DATA </h1>
 
 <fieldset>
 <h2> minion_data/ </h2>
 
 <?php
 
-$command = escapeshellcmd('ls /home/pi/Desktop/minion_data/');
-$output = shell_exec($command);
-echo $output;
+$output = null;
+exec('ls /home/pi/Desktop/minion_data/', $output);
+echo '<pre>';
+foreach($output as $line)
+    echo $line . "\n";
+echo '</pre>';
 
 ?>
 </fieldset>
@@ -32,9 +35,12 @@ echo $output;
 
 <?php
 
-$command = escapeshellcmd('ls /home/pi/Desktop/minion_data/INI/');
-$output = shell_exec($command);
-echo $output;
+$output = null;
+exec('ls /home/pi/Desktop/minion_data/INI/', $output);
+echo '<pre>';
+foreach($output as $line)
+    echo $line . "\n";
+echo '</pre>';
 
 ?>
 </fieldset>
@@ -44,9 +50,12 @@ echo $output;
 
 <?php
 
-$command = escapeshellcmd('ls /home/pi/Desktop/minion_data/FIN/');
-$output = shell_exec($command);
-echo $output;
+$output = null;
+exec('ls /home/pi/Desktop/minion_data/FIN/', $output);
+echo '<pre>';
+foreach($output as $line)
+    echo $line . "\n";
+echo '</pre>';
 
 ?>
 </fieldset>
@@ -56,9 +65,12 @@ echo $output;
 
 <?php
 
-$command = escapeshellcmd('ls /home/pi/Desktop/minion_pics/');
-$output = shell_exec($command);
-echo $output;
+$output = null;
+exec('ls /home/pi/Desktop/minion_pics/', $output);
+echo '<pre>';
+foreach($output as $line)
+    echo $line . "\n";
+echo '</pre>';
 
 ?>
 </fieldset>
@@ -91,7 +103,7 @@ echo $output;
 <?php
 if(isset($_POST['download'])){
 $dir = '/home/pi/Desktop/';
-$zip_file = 'MinionXXX.zip';
+$zip_file = 'Minion48.zip';
 
 // Get real path for our folder
 $rootPath = realpath($dir);
