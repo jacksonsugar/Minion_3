@@ -236,7 +236,6 @@ os.system("echo 'modules-load=dwc2,g_ether plymoth.ignore-serial-consoles' >> /b
 
 # Move scripts to local build
 os.system('sudo cp source/Keep_Me_Alive.py source/dhcp-configure.py source/dhcp-switch.py source/RTC_Finish.py source/RTC-set.py source/Shutdown.py source/flasher.py source/Iridium_gps.py source/FishTag_data.py /home/pi/Documents/Minion_tools/')
-os.system('sudo cp -r source/drivers/tsys01-python/tsys01 source/drivers/ms5837-python/ms5837.py /home/pi/Documents/Minion_scripts')
 
 # Set pi to launch rest of script after reboot
 os.system("sudo sed -i '/# Print the IP/isudo python /home/pi/Documents/Minion_tools/RTC_Finish.py\n\n' /etc/rc.local")
