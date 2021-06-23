@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View Data #48</title>
+<title>View Data XXX</title>
 <style>
     h1 {text-align: center;}
     body {
@@ -13,7 +13,7 @@
 </style>
 </head>
 <body>
-<h1> MINION 48 DATA </h1>
+<h1> MINION XXX DATA </h1>
 
 <fieldset>
 <h2> minion_data/ </h2>
