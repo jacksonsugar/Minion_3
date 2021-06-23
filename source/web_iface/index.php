@@ -22,6 +22,10 @@
 <input type='submit' value='Set Minion to Sleep Cycle' />
 </form>
 <br>
+<form action="/View_config.php" method="post">
+<input type="submit" value="View Minion Config">
+</form>
+<br>
 <form action="/conf_edit.php" method="post">
 <input type="submit" value="Edit Minion Config">
 </form>
