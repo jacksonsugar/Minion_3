@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View 48 Config</title>
+<title>View XXX Config</title>
 
 <style>
     body {
@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<h2>Minion 48 Config File</h2>
+<h2>Minion XXX Config File</h2>
 
 <?php
 
