@@ -1,5 +1,6 @@
 #include "LowPower.h"
 
+//Be sure to remember to write fuses as below:
 //avrdude -c usbtiny -p atmega328p -U lfuse:w:0xe2:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m
 
 int WIFI_SIG = 3;
