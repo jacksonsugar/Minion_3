@@ -1,5 +1,7 @@
 #include "LowPower.h"
 
+//avrdude -c usbtiny -p atmega328p -U lfuse:w:0xe2:m -U hfuse:w:0xd9:m -U efuse:w:0xff:m
+
 int WIFI_SIG = 3;
 int Pi_on = 5;
 int IO = 6;
@@ -13,26 +15,6 @@ int SAMPLES = 0;
 int MAX_Sample_Num = 3000;
 
 
-void soft_pwm(void)
-{
-  analogWrite(STROBE, 100);
-  delay(200);
-  digitalWrite(STROBE, LOW);
-  delay(100);
-}
-
-void hard_pwm(void)
-{
-  for (int j = 1; j <= 2; j++) {
-
-    analogWrite(STROBE, 200);
-    delay(200);
-    digitalWrite(STROBE, LOW);
-    delay(100);
-
-  }
-}
-
 void setup(void)
 {
   pinMode(WIFI_SIG, INPUT_PULLUP);
@@ -45,12 +27,13 @@ void setup(void)
   digitalWrite(Sampling_LED, LOW);
   digitalWrite(STROBE, LOW);
 
-
-  for (int jj = 1; jj <= 3; jj++) {
+  for(int i = 0; i < 3; i++){
     digitalWrite(Sampling_LED, HIGH);
-    soft_pwm();
+    digitalWrite(STROBE, HIGH);
+    delay(400);
     digitalWrite(Sampling_LED, LOW);
-    delay(300);
+    digitalWrite(STROBE, LOW);
+    delay(100);
   }
 }
 
@@ -97,12 +80,12 @@ void Pi_Samp_RECOVER() {
 
   do {
     digitalWrite(Sampling_LED, HIGH);
-    hard_pwm();
+    strobe();
     LowPower.powerDown(SLEEP_4S, ADC_OFF, BOD_OFF);
     WIFI_Status = digitalRead(WIFI_SIG);
     Mission_Status = digitalRead(IO);
     if (Mission_Status == LOW){
-      Extend_Sleep = 1;
+      Extend_Sleep = 0;  //Disabled for now
     }
   }
   while (WIFI_Status == HIGH);
@@ -116,6 +99,23 @@ void Pi_Samp_RECOVER() {
   digitalWrite(Pi_on, LOW);
 }
 
+
+void strobe() {
+  digitalWrite(STROBE, HIGH);
+  delay(100);
+  digitalWrite(STROBE, LOW);
+  delay(400);
+
+  digitalWrite(STROBE, HIGH);
+  delay(250);
+  digitalWrite(STROBE, LOW);
+  delay(750);
+
+  digitalWrite(STROBE, HIGH);
+  delay(100);
+  digitalWrite(STROBE, LOW);
+  delay(400);
+}
 
 void loop(void) 
 {
@@ -132,30 +132,27 @@ void loop(void)
     while(1) {
       Pi_Samp_RECOVER();
 
-      //This is the sleep cycle! Set for 180 cycles of 10 seconds for 30 minutes
-      for (int i = 1; i <= 180; i++){
+      //This is the sleep cycle! Set for 120 cycles of 10 seconds for 20 minutes
+      for (int i = 1; i <= 120; i++){
         LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
-        hard_pwm();
+        strobe();
       }
 
       if (Extend_Sleep == 1){
         //This is the sleep cycle! Set for 180 cycles of 10 seconds for 30 MORE minutes asleep
         for (int i = 1; i <= 180; i++){
           LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
-          hard_pwm();
+          strobe();
         }
       }
     }
   }
-  //This is the sleep cycle! Set for 225 cycles of 4 seconds for 15 minutes
-  for (int i = 1; i <= 225; i++){
+  //This is the sleep cycle! Set for 225 cycles of 4 seconds for 15 minutes - 80 seconds for sampling - 64 seconds from testing`
+  for (int i = 1; i <= 189; i++){
     LowPower.powerDown(SLEEP_4S, ADC_OFF, BOD_OFF);
   }
 
 }
-
-
-
 
 
 
