@@ -103,7 +103,7 @@ echo '</pre>';
 <?php
 if(isset($_POST['download'])){
 $dir = '/home/pi/Desktop/';
-$zip_file = 'Minion48.zip';
+$zip_file = 'MinionXXX.zip';
 
 // Get real path for our folder
 $rootPath = realpath($dir);
