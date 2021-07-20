@@ -31,6 +31,7 @@ def abortMission(configLoc):
     abortConfig.set('Mission','Abort','1')
     with open(configLoc,'wb') as abortFile:
         abortConfig.write(abortFile)
+    GPIO.setmode(GPIO.BOARD)
     GPIO.setup(29, GPIO.OUT)
     GPIO.output(29, 0)
     os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
@@ -90,13 +91,16 @@ if iniP30 == True:
         print("Failed to initialize P30 sensor!")
         exit(1)
 
+    depth_factor = .01
+    surface_offset = 10
+
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = Psensor.pressure()
+        Pres_ini = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
     else:
         Pres_ini = "Broken"
 
-    file.write("Pressure(mbar),Temp(C)")
+    file.write("Pressure(dbar),Temp(C)")
 
 if iniP100 == True:
 
@@ -105,13 +109,17 @@ if iniP100 == True:
     if not Psensor.init():
         print("Failed to initialize P100 sensor!")
         exit(1)
+
+    depth_factor = 10
+    surface_offset = 0
+
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = Psensor.pressure()
+        Pres_ini = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
     else:
         Pres_ini = "Broken"
 
-    file.write("Pressure(mbar),Temp(C)")
+    file.write("Pressure(dbar),Temp(C)")
 
 if iniTmp == True:
 
@@ -131,6 +139,8 @@ file.close()
 # Spew readings
 while NumSamples <= TotalSamples:
 
+    tic = time.perf_counter()
+
     file = open(file_name,"a")
 
     sensor_string = ''
@@ -138,8 +148,8 @@ while NumSamples <= TotalSamples:
     if iniP100 or iniP30 == True:
 
         if Psensor.read():
-            Ppressure = Psensor.pressure()
-            Ptemperature = Psensor.temperature()
+            Ppressure = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
+            Ptemperature = round(Psensor.temperature(),3)
             Pres_data = "{},{},".format(Ppressure, Ptemperature)
             print("Pressure sensor data: {}".format(Pres_data))
             sensor_string = "{}{}".format(sensor_string,Pres_data)
@@ -148,7 +158,7 @@ while NumSamples <= TotalSamples:
             print('Pressure Sensor ded')
             file.write('Pressure Sensor fail')
             abortMission(configLoc)
-        
+
         if Ppressure >= MAX_Depth:
             file.write("Minion Exceeded Depth Maximum!")
             abortMission(configLoc)
@@ -160,18 +170,22 @@ while NumSamples <= TotalSamples:
             print("Error reading sensor")
             iniTmp = False
 
-        Temp_acc = sensor_temp.temperature()
+        Temp_acc = round(sensor_temp.temperature(),4)
 
         print("Temperature_accurate: {} C".format(Temp_acc))
 
         sensor_string = '{}{}'.format(sensor_string, Temp_acc)
 
-    
+
     file.write("{}\n".format(sensor_string))
 
     NumSamples = NumSamples + 1
 
-    time.sleep(Sf)
+    toc = time.perf_counter()
+
+    timeS = toc - tic
+
+    time.sleep(Sf - timeS)
 
 file.close()
 
