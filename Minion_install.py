@@ -277,5 +277,7 @@ os.system('sudo chmod +x /var/www/html/*')
 
 os.system('sudo sed -i "$ a www-data ALL=(ALL) NOPASSWD:ALL" /etc/sudoers')
 
+os.system('sudo cp source/web_iface/php.ini /etc/php/7.3/cli/')
+
 # Reboot to finish kernel module config
 os.system('sudo shutdown now')
