@@ -19,7 +19,7 @@
 <p>This tool is designed to interact with Minions</p>
 
 <form action="/Sleep_check.php" method='post'>
-<input type='submit' value='Set Minion XXX to Sleep Cycle' />
+<input type='submit' value='Set Minion to Sleep Cycle' />
 </form>
 <br>
 <form action="/scan_IPs.php" method='post'>
@@ -27,19 +27,19 @@
 </form>
 <br>
 <form action="/View_config.php" method="post">
-<input type="submit" value="View Minion XXX Config">
+<input type="submit" value="View Minion Config">
 </form>
 <br>
 <form action="/conf_edit.php" method="post">
-<input type="submit" value="Edit Minion XXX Config">
+<input type="submit" value="Edit Minion Config">
 </form>
 <br>
 <form action="/View_Data.php" method="post">
-<input type="submit" value="View Minion XXX Data">
+<input type="submit" value="View Minion Data">
 </form>
 <br>
 <form action="/Minion_test.php" method="post">
-<input type="submit" value="Test Minion XXX Functions">
+<input type="submit" value="Test Minion Functions">
 </form>
 
 </body>
