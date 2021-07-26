@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View XXX Config</title>
+<title>View 52 Config</title>
 
 <style>
     body {
@@ -14,7 +14,7 @@
 </head>
 <body>
 
-<h2>Minion XXX Config File</h2>
+<h2>Minion 52 Config File</h2>
 
 <?php
 
@@ -30,9 +30,13 @@ if ($file = fopen("/home/pi/Desktop/Minion_config.ini", "r")) {
 ?>
 
 <br>
-<br>
 <form action="/index.php" method="post">
 <input type="submit" value="Return">
 </form>
 </body>
 </html>
+<br>
+<br>
+<br>
+<br>
+<br>

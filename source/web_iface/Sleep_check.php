@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Config XXX Submitted</title>
+<title>Config 52 Submitted</title>
 
 <style>
     body {
@@ -15,11 +15,11 @@
 <body>
 
 <br>
-<h1>  Are you sure you want to put Minion XXX to sleep?</h1>
+<h1>  Are you sure you want to put Minion 52 to sleep?</h1>
 <br>
 <br>
 <form method='post' action=''>
-<input type='submit' name='shutdown' value='Set Minion XXX to Sleep' />
+<input type='submit' name='shutdown' value='Set Minion 52 to Sleep' />
 </form>
 
 <br>

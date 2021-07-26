@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Clear Minion XXX Data</title>
+<title>Clear Minion 52 Data</title>
 <style>
     body {
         width: 35em;
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h1>Clear Minion XXX Data!</h1>
+<h1>Clear Minion 52 Data!</h1>
 
 <form method='post' action=''>
 <input type='submit' name='clear' value='Clear Data' />

@@ -88,6 +88,15 @@ echo '<form action="/action_page.php" method="post">
   <input '.$ACC.' type="checkbox" id="ACC" name="ACC" value="ACC">
   <label for="ACC"> ADXL345 Accelerometer </label><br>
   </fieldset>
+  <fieldset>
+  <legend>Ignore WIFI Signal:</legend>
+  <br>
+  <label for="IG_WIFI-days">Days:</label>
+  <input type="text" id="IG_WIFI-days" name="IG_WIFI-days" value="'.$cfg_file['Mission']['Ignore_WIFI-days'].'"><br><br>
+  <label for="IG_WIFI-hours">Hours:</label>
+  <input type="text" id="IG_WIFI-hours" name="IG_WIFI-hours" value="'.$cfg_file['Mission']['Ignore_WIFI-hours'].'"><br>
+  </fieldset>
+  </fieldset>
   <br>
   <fieldset>
   <legend>Confirm Minion Number:</legend>

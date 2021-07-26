@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Submit XXX Config</title>
+<title>Submit 52 Config</title>
 
 <style>
     body {
@@ -16,6 +16,8 @@
 <h1>Minion <?php echo $_POST["MNumber"]; ?>!</h1>
 <fieldset>
 MAX Depth: <?php echo $_POST["DMAX"]; ?><br>
+Ignore_WIFI-days: <?php echo $_POST["IG_WIFI-days"]; ?><br>
+Ignore_WIFI-hours: <?php echo $_POST["IG_WIFI-hours"]; ?><br>
 </fieldset>
 <fieldset>
 <legend>Initial Samples:</legend>
@@ -74,8 +76,9 @@ fwrite($myfile, $Minion);
 
 $Mission = "[Mission]\n"
   ."Abort = 0"."\n"
-  ."Max_Depth = ".$_POST["DMAX"]."\n\n";
-
+  ."Max_Depth = ".$_POST["DMAX"]."\n"
+  ."Ignore_WIFI-days = ".$_POST["IG_WIFI-days"]."\n"
+  ."Ignore_WIFI-hours = ".$_POST["IG_WIFI-hours"]."\n\n";
 fwrite($myfile, $Mission);
 
 $Initial_Samples = "[Initial_Samples]\n"
@@ -132,7 +135,7 @@ fwrite($myfile, $Sampling_scripts);
 fclose($myfile);
 ?>
 
-<h2>Config XXX saved!</h2>
+<h2>Config 52 saved!</h2>
 
 <form action="/form_submitted.php" method="post">
 <input type="submit" value="Write Minion Config!">

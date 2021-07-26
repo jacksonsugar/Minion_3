@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Minion XXX Testing</title>
+<title>Minion 52 Testing</title>
 
 <style>
     h1 {text-align: center;}
@@ -15,14 +15,68 @@
 </head>
 <body>
 
-<h1> Take a test image on Minion XXX! </h1>
+<h1> Test sampling functions on Minion 52! </h1>
 <br>
+<fieldset>
+<h3> Take a test image:</h3>
 <br>
 <form method='post' action=''>
 <input type='submit' name='capture' value='Capture!' />
 <input type='submit' name='download' value='Capture & Download!' />
 </form>
+</fieldset>
+<fieldset>
 <br>
+<form method='post' action=''>
+<input type='submit' name='pressure' value='Test connected pressure sensor' />
+</form>
+<br>
+
+<?php
+if(isset($_POST['pressure'])){
+
+$command = escapeshellcmd('python /home/pi/Documents/Minion_scripts/Pressure_test.py');
+$output_pres = shell_exec($command);
+echo "Pressure reading: " . $output_pres . " dbar";
+
+}
+?>
+<br>
+</fieldset>
+<fieldset>
+<br>
+<form method='post' action=''>
+<input type='submit' name='temperature' value='Test connected temperature sensor' />
+</form>
+<br>
+<?php
+if(isset($_POST['temperature'])){
+
+$command = escapeshellcmd('sudo python /home/pi/Documents/Minion_scripts/Temperature_test.py');
+$output_temp = shell_exec($command);
+echo "Temperature reading: " . $output_temp . " C";
+
+}
+?>
+<br>
+</fieldset>
+<fieldset>
+<br>
+<form method='post' action=''>
+<input type='submit' name='GPS' value='Test connected Iridium GPS modem' />
+</form>
+<br>
+<?php
+if(isset($_POST['GPS'])){
+
+$command = escapeshellcmd('sudo python /home/pi/Documents/Minion_scripts/Iridium_test.py');
+$output_GPS = shell_exec($command);
+echo $output_GPS;
+
+}
+?>
+<br>
+</fieldset>
 <br>
 <form action="/index.php" method="post">
 <input type="submit" value="Return">
@@ -75,3 +129,4 @@ readfile($file);
 
 }
 ?>
+
