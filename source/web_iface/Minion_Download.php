@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Download Data 52</title>
+<title>Download Data XXX</title>
 <style>
     h1 {text-align: center;}
     body {
@@ -18,7 +18,7 @@
 
 <body>
 
-<h1>Download Minion 52 Data</h1>
+<h1>Download Minion XXX Data</h1>
 
 <br>
 <br>
