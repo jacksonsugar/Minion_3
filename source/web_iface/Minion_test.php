@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Minion 52 Testing</title>
+<title>Minion XXX Testing</title>
 
 <style>
     h1 {text-align: center;}
@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<h1> Test sampling functions on Minion 52! </h1>
+<h1> Test sampling functions on Minion XXX! </h1>
 <br>
 <fieldset>
 <h3> Take a test image:</h3>
