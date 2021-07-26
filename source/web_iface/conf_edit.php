@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Edit 52 Config</title>
+<title>Edit XXX Config</title>
 <style>
     body {
         width: 35em;
@@ -12,7 +12,7 @@
 </style>
 </head>
 <body>
-<h1>MINION 52 Config!</h1>
+<h1>MINION XXX Config!</h1>
 
 <p>This tool is designed to prepare MINIONs for deployment</p>
 
