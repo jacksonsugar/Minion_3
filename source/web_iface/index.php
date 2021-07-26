@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>MINION_52</title>
+<title>MINION_XXX</title>
 <style>
     body {
         width: 35em;
@@ -14,12 +14,12 @@
 
 <img src="splash.png" alt="MINION">
 
-<h1>MINION 52</h1>
+<h1>MINION XXX</h1>
 
 <p>This tool is designed to interact with Minions</p>
 
 <form action="/Sleep_check.php" method='post'>
-<input type='submit' value='Set Minion to Sleep Cycle' />
+<input type='submit' value='Set Minion XXX to Sleep Cycle' />
 </form>
 <br>
 <form action="/scan_IPs.php" method='post'>
@@ -27,19 +27,19 @@
 </form>
 <br>
 <form action="/View_config.php" method="post">
-<input type="submit" value="View Minion Config">
+<input type="submit" value="View Minion XXX Config">
 </form>
 <br>
 <form action="/conf_edit.php" method="post">
-<input type="submit" value="Edit Minion Config">
+<input type="submit" value="Edit Minion XXX Config">
 </form>
 <br>
 <form action="/View_Data.php" method="post">
-<input type="submit" value="View Minion Data">
+<input type="submit" value="View Minion XXX Data">
 </form>
 <br>
 <form action="/Minion_test.php" method="post">
-<input type="submit" value="Test Minion Functions">
+<input type="submit" value="Test Minion XXX Functions">
 </form>
 
 </body>
