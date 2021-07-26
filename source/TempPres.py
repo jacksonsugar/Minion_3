@@ -185,6 +185,10 @@ while NumSamples <= TotalSamples:
 
     timeS = toc - tic
 
+    if timeS >= Sf:
+
+        timeS = Sf
+
     time.sleep(Sf - timeS)
 
 file.close()

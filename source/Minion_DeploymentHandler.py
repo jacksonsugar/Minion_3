@@ -20,19 +20,27 @@ def flash():
 def str2bool(v):
     return v.lower() in ("yes", "true", "t", "1")
 
-def check_wifi():
+def check_wifi(IgnoreStatus):
 
-    if "Minion_Hub" in os.popen(iwlist).read():
+    networks = os.popen(iwlist).read()
+
+    if "Master_Hub" in networks:
+        print("Bypassing WIFI Lock")
         status = "Connected"
+
+    elif "Minion_Hub" in networks and IgnoreStatus == False:
+        status = "Connected"
+
+    else:
+        print("No WIFI found.")
+        status = "Not Connected"
+
+    if status == "Connected":
         net_status = os.popen(net_cfg).read()
         if ".Minion" in net_status:
             os.system(ifswitch)
         else:
             print("You have Minions!")
-
-    else:
-        print("No WIFI found.")
-        status = "Not Connected"
 
     print(status)
     return status
@@ -99,17 +107,38 @@ iniTmp = str2bool(config['Sampling_scripts']['Temperature'])
 iniO2  = str2bool(config['Sampling_scripts']['Oxybase'])
 iniAcc = str2bool(config['Sampling_scripts']['ACC_100Hz'])
 
+
+INIsamp = float(config['Initial_Samples']['hours'])
+IG_WIFI_D = float(config['Mission']['Ignore_WIFI-days'])
+IG_WIFI_H = float(config['Mission']['Ignore_WIFI-hours'])
+
+IG_WIFI_Samples = (((IG_WIFI_D*24) + IG_WIFI_H)/Srate) - (INIsamp/Srate)
+
 print("Days : {}".format(Ddays))
 print("Hours: {}".format(Dhours))
 print("Sample rate (hours) - {}".format(Srate))
 
 TotalSamples = (((Ddays*24)+Dhours))/Srate
 
+CurrentSamples = len(os.listdir('{}/minion_pics'.format(configDir)))
+
+RemainSamples = (TotalSamples - CurrentSamples)
+
 print("Total Cycles ------- {}".format(TotalSamples))
+
+print("Cycles Remaining --- {}".format(RemainSamples))
+
+if IG_WIFI_Samples >= CurrentSamples:
+    IgnoreWIFI = True
+    print("Ignoring Wifi, in Mission")
+
+else:
+    IgnoreWIFI = False
+    print("Searching for WIFI")
 
 ifswitch = "sudo python /home/pi/Documents/Minion_tools/dhcp-switch.py"
 
-iwlist = 'sudo iwlist wlan0 scan | grep "Minion_Hub"'
+iwlist = 'sudo iwlist wlan0 scan | grep -e "Minion_Hub" -e "Master_Hub"'
 
 net_cfg = "ls /etc/ | grep dhcp"
 
@@ -135,7 +164,7 @@ if __name__ == '__main__':
             os.system('sudo python /home/pi/Documents/Minion_scripts/Minion_image.py &')
 
         if iniP30 == True or iniP100 == True or iniTmp == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/TempPres.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/TempPres.py &')
 
         if iniO2 == True:
             os.system('sudo python /home/pi/Documents/Minion_scripts/OXYBASE_RS232.py &')
@@ -149,16 +178,16 @@ if __name__ == '__main__':
 
     ## Check for wifi
 
-        if check_wifi() == "Connected":
-            kill_sampling(scriptNames)
-            flash()
-            exit(0)
+            if check_wifi(IgnoreWIFI) == "Connected":
+                kill_sampling(scriptNames)
+                flash()
+                exit(0)
 
-        else:
-            print("Sampling")
-            time.sleep(Stime*30)
+            else:
+                print("Sampling")
+                time.sleep(5)
 
     print('Goodbye')
-    GPIO.output(wifi, 0)
+#    GPIO.output(wifi, 0)
     time.sleep(5)
-    os.system('sudo shutdown now')
+#    os.system('sudo shutdown now')
