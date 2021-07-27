@@ -134,7 +134,7 @@ if USBdata == True:
     
     time.sleep(3)
 
-    os.system('sudo mkdir /media/Data/minion_pics /media/Data/minion_data')
+    os.system('sudo mkdir /media/Data/minion_pics /media/Data/minion_data /media/Data/minion_memory')
     os.system('sudo mkdir /media/Data/minion_data/INI /media/Data/minion_data/FIN')
 
     os.system('sudo cp source/Minion_config.ini /media/Data/')
@@ -166,7 +166,7 @@ if USBdata == True:
 elif USBdata == False:
 
     print("All files for operation found inside /home/pi/Desktop!")
-    os.system('sudo mkdir /home/pi/Desktop/minion_pics /home/pi/Desktop/minion_data')
+    os.system('sudo mkdir /home/pi/Desktop/minion_pics /home/pi/Desktop/minion_data /home/pi/Desktop/minion_memory')
     os.system('sudo mkdir  /home/pi/Desktop/minion_data/INI /home/pi/Desktop/minion_data/FIN')
     os.system('sudo cp source/Minion_config.ini /home/pi/Desktop')
 
