@@ -8,6 +8,11 @@
         margin: 0 auto;
         font-family: Tahoma, Verdana, Arial, sans-serif;
     }
+    hr {
+        width:100%;
+        text-align:left;
+        color:red;
+    }
 </style>
 </head>
 <body>
@@ -19,11 +24,7 @@
 <p>This tool is designed to interact with Minions</p>
 
 <form action="/Sleep_check.php" method='post'>
-<input type='submit' value='Set Minion to Sleep Cycle' />
-</form>
-<br>
-<form action="/scan_IPs.php" method='post'>
-<input type='submit' value='Check for MINIONs on network' />
+<input type='submit' value='Mission Settings' />
 </form>
 <br>
 <form action="/View_config.php" method="post">
@@ -38,8 +39,16 @@
 <input type="submit" value="View Minion Data">
 </form>
 <br>
+<form action="/Minion_archive.php" method='post'>
+<input type='submit' value='Minion Archives' />
+</form>
+<br>
 <form action="/Minion_test.php" method="post">
 <input type="submit" value="Test Minion Functions">
+</form>
+<br>
+<form action="/scan_IPs.php" method='post'>
+<input type='submit' value='Check for MINIONs on network' />
 </form>
 
 </body>

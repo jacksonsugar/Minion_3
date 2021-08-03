@@ -135,10 +135,10 @@ fwrite($myfile, $Sampling_scripts);
 fclose($myfile);
 ?>
 
-<h2>Config 52 saved!</h2>
+<h2>Config XXX saved!</h2>
 
 <form action="/form_submitted.php" method="post">
-<input type="submit" value="Write Minion XXX Config!">
+<input type="submit" value="Write Minion Config!">
 </form>
 
 <br>

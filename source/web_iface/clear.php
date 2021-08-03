@@ -19,15 +19,12 @@
 <input type='submit' name='clear' value='Clear Data' />
 </form>
 <br>
+<br>
 <form action="/View_Data.php" method="post">
-<input type="submit" value="Abort Data Clear">
-</form>
-<br>
-<br>
-<form action="/index.php" method="post">
 <input type="submit" value="Return">
 </form>
-
+<br>
+<br>
 </body>
 </html>
 <br>

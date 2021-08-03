@@ -15,7 +15,7 @@
 
 <body>
 
-<h1>Scan network for other connected devices!</h1>
+<h1>Scan network for connected devices!</h1>
 
 <fieldset>
 <br>

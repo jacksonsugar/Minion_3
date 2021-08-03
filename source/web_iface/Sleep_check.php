@@ -15,13 +15,20 @@
 <body>
 
 <br>
-<h1>  Are you sure you want to put Minion XXX to sleep?</h1>
+<h1>Minion XXX launch prep</h1>
 <br>
 <br>
+<h3>Step 1: Reset sample counter and archive previous data.</h3>
 <form method='post' action=''>
-<input type='submit' name='shutdown' value='Set Minion XXX to Sleep' />
+<input type='submit' name='new_mission' value='Archive data and begin mission' />
 </form>
-
+<br>
+<h3>Step 2: Turn Minion off before deployment.</h3>
+<form method='post' action=''>
+<input type='submit' name='shutdown' value='Set Minion 52 to Sleep' />
+</form>
+<br>
+<h3>Step 3: After 30 seconds, attach the magent to keep the Minion off.</h3>
 <br>
 <form action="/index.php" method="post">
 <input type="submit" value="Return">
@@ -31,6 +38,16 @@
 </body>
 </html>
 
+
+<?php
+if(isset($_POST['new_mission'])){
+
+$command = escapeshellcmd('sudo python /var/www/html/new_mission.py');
+$output = shell_exec($command);
+echo $output;
+echo '<br>Ready to begin Mission!<br>';
+}
+?>
 
 <?php
 if(isset($_POST['shutdown'])){

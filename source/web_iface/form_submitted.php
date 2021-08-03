@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Config XXX Submitted Submitted</title>
+<title>Config Submitted Submitted</title>
 
 <style>
     body {
@@ -22,7 +22,7 @@ echo $output;
 
 ?>
 
-<h>  Config XXX written!</h>
+<h>  Config written!</h>
 
 <br>
 <form action="/index.php" method="post">
