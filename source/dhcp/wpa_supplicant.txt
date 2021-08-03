@@ -4,3 +4,10 @@ network={
         key_mgmt=WPA-PSK
 }
 
+network={
+        ssid="Master_Hub"
+        psk="ramboat1!"
+        key_mgmt=WPA-PSK
+        priority=50
+}
+
