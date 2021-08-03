@@ -79,10 +79,15 @@ echo '</pre>';
 </fieldset>
 <br>
 <br>
-
-<h2>Download MINION Data</h2>
 <form action="/Minion_Download.php" method='post'>
 <input type='submit' value='Download Data' />
+</form>
+
+<br>
+<br>
+
+<form method='post' action=''>
+<input type='submit' name='new_mission' value='Archive Data' />
 </form>
 
 <br>
@@ -91,7 +96,6 @@ echo '</pre>';
 <form action="/clear.php" method="post">
 <input type="submit" value="Clear Data">
 </form>
-
 
 <br>
 <br>
@@ -112,4 +116,14 @@ echo '</pre>';
 <br>
 <br>
 <br>
+
+<?php
+if(isset($_POST['new_mission'])){
+
+$command = escapeshellcmd('sudo python /var/www/html/new_mission.py');
+$output = shell_exec($command);
+header("Refresh:0");
+}
+?>
+
 
