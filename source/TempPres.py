@@ -34,7 +34,7 @@ def abortMission(configLoc):
     GPIO.setmode(GPIO.BOARD)
     GPIO.setup(29, GPIO.OUT)
     GPIO.output(29, 0)
-    os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
+    os.system('sudo python3 /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
     exit(0)
 
 scriptNames = ["Minion_image.py","Minion_image_IF.py","OXYBASE_RS232.py","ACC_100Hz.py","Recovery_Sampler_Burn.py","OXYBASE_RS232_IF.py","ACC_100Hz_IF.py","Iridium_gps.py","Iridium_data.py"]

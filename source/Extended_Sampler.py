@@ -9,6 +9,7 @@ import os
 import math
 import configparser
 import sys
+import atexit
 
 BURN = 33
 data_rec = 16
@@ -48,7 +49,7 @@ def abortMission(configLoc):
 
     GPIO.setup(29, GPIO.OUT)
     GPIO.output(29, 0)
-    os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
+    os.system('sudo python3 /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
 
     time.sleep(60)
     exit(0)
@@ -75,7 +76,7 @@ iniAcc = str2bool(config['Sampling_scripts']['ACC_100Hz'])
 if Abort == True:
         GPIO.setup(29, GPIO.OUT)
         GPIO.output(29, 0)
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
+        os.system('sudo python3 /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
 
 firstp = open("/home/pi/Documents/Minion_scripts/timesamp.pkl","rb")
 samp_time = pickle.load(firstp)
@@ -111,13 +112,16 @@ if iniP30 == True:
         print("Failed to initialize P30 sensor!")
         exit(1)
 
+    depth_factor = .01
+    surface_offset = 10
+
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = Psensor.pressure()
+        Pres_ini = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
     else:
         Pres_ini = "Broken"
 
-    file.write("Pressure(mbar),Temp(C)")
+    file.write("Pressure(dbar),Temp(C)")
 
 if iniP100 == True:
 
@@ -126,13 +130,17 @@ if iniP100 == True:
     if not Psensor.init():
         print("Failed to initialize P100 sensor!")
         exit(1)
+
+    depth_factor = 10
+    surface_offset = 0
+
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = Psensor.pressure()
+        Pres_ini = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
     else:
         Pres_ini = "Broken"
 
-    file.write("Pressure(Bar),Temp(C)")
+    file.write("Pressure(dbar),Temp(C)")
 
 if iniTmp == True:
 
@@ -153,16 +161,18 @@ if __name__ == '__main__':
 
 
     if iniImg == True:
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Minion_image_IF.py &')
+        os.system('sudo python3 /home/pi/Documents/Minion_scripts/Minion_image_IF.py &')
 
     if iniO2 == True:
-        os.system('sudo python /home/pi/Documents/Minion_scripts/OXYBASE_RS232_IF.py &')
+        os.system('sudo python3 /home/pi/Documents/Minion_scripts/OXYBASE_RS232_IF.py &')
 
     if iniAcc == True:
-        os.system('sudo python /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
+        os.system('sudo python3 /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
 
     # Spew readings
     while NumSamples <= TotalSamples:
+
+        tic = time.perf_counter()
 
         file = open(file_name,"a")
 
@@ -171,8 +181,8 @@ if __name__ == '__main__':
         if iniP100 or iniP30 == True:
 
             if Psensor.read():
-                Ppressure = Psensor.pressure()
-                Ptemperature = Psensor.temperature()
+                Ppressure = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
+                Ptemperature = round(Psensor.temperature(),3)
                 Pres_data = "{},{},".format(Ppressure, Ptemperature)
                 print("Pressure sensor data: {}".format(Pres_data))
                 sensor_string = "{}{}".format(sensor_string,Pres_data)
@@ -193,7 +203,7 @@ if __name__ == '__main__':
                 print("Error reading sensor")
                 iniTmp = False
 
-            Temp_acc = sensor_temp.temperature()
+            Temp_acc = round(sensor_temp.temperature(),4)
 
             print("Temperature_accurate: {} C".format(Temp_acc))
 
@@ -204,7 +214,15 @@ if __name__ == '__main__':
 
         NumSamples = NumSamples + 1
 
-        time.sleep(Sf)
+        toc = time.perf_counter()
+
+        timeS = toc - tic
+
+        if timeS >= Sf:
+
+            timeS = Sf
+
+        time.sleep(Sf - timeS)
 
     file.close()
     kill_sampling(scriptNames)

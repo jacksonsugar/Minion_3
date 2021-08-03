@@ -63,8 +63,27 @@ def update_time():
         firstp.close()
     except:
         print("update time failed")
+    return samp_time
 
-update_time()
+def read_sampcount():
+    countp = open("/home/pi/Documents/Minion_scripts/sampcount.pkl","rb")
+    sampcount = pickle.load(countp)
+    countp.close()
+    return sampcount
+
+def update_sampcount():
+    countp = open("/home/pi/Documents/Minion_scripts/sampcount.pkl","rb")
+    sampcount = pickle.load(countp)
+    sampcount = sampcount + 1
+    countp.close()
+    countp = open("/home/pi/Documents/Minion_scripts/sampcount.pkl","wb")
+    pickle.dump(sampcount, countp)
+    countp.close()
+    return sampcount
+
+samp_time = update_time()
+
+samp_count = read_sampcount()
 
 i = 0
 wifi = 22
@@ -114,21 +133,24 @@ IG_WIFI_H = float(config['Mission']['Ignore_WIFI-hours'])
 
 IG_WIFI_Samples = (((IG_WIFI_D*24) + IG_WIFI_H)/Srate) - (INIsamp/Srate)
 
+print("Minion Deployment Handler")
+print("Time:  {}".format(samp_time))
 print("Days : {}".format(Ddays))
 print("Hours: {}".format(Dhours))
 print("Sample rate (hours) - {}".format(Srate))
 
 TotalSamples = (((Ddays*24)+Dhours))/Srate
 
-CurrentSamples = len(os.listdir('{}/minion_pics'.format(configDir)))
-
-RemainSamples = (TotalSamples - CurrentSamples)
+if samp_count >= TotalSamples:
+    RemainSamples = 0
+else:
+    RemainSamples = (TotalSamples - samp_count)
 
 print("Total Cycles ------- {}".format(TotalSamples))
 
 print("Cycles Remaining --- {}".format(RemainSamples))
 
-if IG_WIFI_Samples >= CurrentSamples:
+if IG_WIFI_Samples >= samp_count:
     IgnoreWIFI = True
     print("Ignoring Wifi, in Mission")
 
@@ -152,27 +174,29 @@ scriptNames = ["TempPres.py", "Minion_image.py","Minion_image_IF.py","OXYBASE_RS
 
 if __name__ == '__main__':
 
-    if len(os.listdir('{}/minion_pics'.format(configDir))) == 0 and len(os.listdir('{}/minion_data/INI'.format(configDir))) == 0:
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Extended_Sampler.py &')
+    if samp_count == 0:
+        os.system('sudo python3 /home/pi/Documents/Minion_scripts/Extended_Sampler.py &')
 
-    elif len(os.listdir('{}/minion_pics'.format(configDir))) >= TotalSamples or Abort == True:
+    elif samp_count >= TotalSamples + 1 or Abort == True:
         GPIO.output(IO328, 0)
-        os.system('sudo python /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
+        os.system('sudo python3 /home/pi/Documents/Minion_scripts/Recovery_Sampler_Burn.py &')
 
     else:
         if iniImg == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/Minion_image.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/Minion_image.py &')
 
         if iniP30 == True or iniP100 == True or iniTmp == True:
             os.system('sudo python3 /home/pi/Documents/Minion_scripts/TempPres.py &')
 
         if iniO2 == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/OXYBASE_RS232.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/OXYBASE_RS232.py &')
 
         if iniAcc == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/ACC_100Hz.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/ACC_100Hz.py &')
 
     time.sleep(5)
+
+    update_sampcount()
 
     while(any(x in os.popen(ps_test).read() for x in scriptNames)) == True:
 

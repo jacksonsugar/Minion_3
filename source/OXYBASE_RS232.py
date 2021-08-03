@@ -68,6 +68,8 @@ file.write("Sample Rate: %sHz \n" % Srate)
 
 while(Sample_number > i):
 
+    tic = time.perf_counter()
+
     ser.write(b'data\r')
 
     reply = ser.read_until('\r')
@@ -78,6 +80,14 @@ while(Sample_number > i):
 
     i = i + 1
 
-    time.sleep(Sf)
+    toc = time.perf_counter()
+
+    timeS = toc - tic
+
+    if timeS >= Sf:
+
+        timeS = Sf
+
+    time.sleep(Sf - timeS)
 
 ser.write(b'mode0000\r')

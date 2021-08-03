@@ -103,16 +103,25 @@ def picture(configDir, NumSamples, RECOVER):
         print("Camera Error")
 
 
-picture(configDir, NumSamples, RECOVER)
+
 # Spew readings
 while NumSamples <= TotalSamples:
 
+    tic = time.perf_counter()
+
+    picture(configDir, NumSamples, RECOVER)
 
     NumSamples = NumSamples + 1
 
-    time.sleep(Srate*60)
+    toc = time.perf_counter()
+
+    timeS = toc - tic
+
+    if timeS >= Srate * 60:
+
+        timeS = Srate
+
+    time.sleep((Srate*60) - timeS)
 
     update_time()
-
-    picture(configDir, NumSamples, RECOVER)
 

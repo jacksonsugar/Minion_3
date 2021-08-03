@@ -51,13 +51,25 @@ file.write("%s\r\n" % samp_time)
 file.write("X,Y,Z = +/- 2g\r\n")
 
 while NumSamples <= TotalSamples:
+
+    tic = time.perf_counter()
+
     try:
         # Read the X, Y, Z axis acceleration values and print them.
         axes = accel.getAxes(True)
         print('{},{},{}'.format(axes['x'],axes['y'],axes['z']))
         file.write('{},{},{}\n'.format(axes['x'], axes['y'], axes['z']))
+
         NumSamples = NumSamples + 1
-        time.sleep(.05)
+
+        toc = time.perf_counter()
+
+        timeS = toc - tic
+
+        if timeS >= .05:
+            timeS = .05
+
+        time.sleep(.05 - timeS)
 
     except:
         print('acc broken')

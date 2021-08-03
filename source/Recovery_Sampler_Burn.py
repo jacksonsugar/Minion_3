@@ -42,8 +42,13 @@ def kill_sampling(scriptNames):
     for script in scriptNames:
         os.system("sudo pkill -9 -f {}".format(script))
 
-scriptNames = ["TempPres.py", "Minion_image.py","Minion_image_IF.py","OXYBASE_RS232.py","ACC_100Hz.py","Extended_Sampler.py","TempPres_IF.py","OXYBASE_RS232_IF.py","ACC_100Hz_IF.py","Iridium_gps.py","Iridium_data.py"]
+def read_sampcount():
+    countp = open("/home/pi/Documents/Minion_scripts/sampcount.pkl","rb")
+    sampcount = pickle.load(countp)
+    countp.close()
+    return sampcount
 
+scriptNames = ["TempPres.py", "Minion_image.py","Minion_image_IF.py","OXYBASE_RS232.py","ACC_100Hz.py","Extended_Sampler.py","TempPres_IF.py","OXYBASE_RS232_IF.py","ACC_100Hz_IF.py","Iridium_gps.py","Iridium_data.py"]
 
 if(any(x in os.popen(ps_test).read() for x in scriptNames)) == True:
 
@@ -66,12 +71,17 @@ iniAcc = str2bool(config['Sampling_scripts']['ACC_100Hz'])
 
 MAX_Depth = int(config['Mission']['MAX_Depth'])
 
+Ddays = int(config['Deployment_Time']['days'])
+Dhours = int(config['Deployment_Time']['hours'])
+
+Srate = float(config['Sleep_cycle']['Minion_sleep_cycle'])
+
+TotalCycles = int((((Ddays*24)+Dhours))/Srate)
+
+samp_count = int(read_sampcount())
+
 firstp = open("/home/pi/Documents/Minion_scripts/timesamp.pkl","rb")
 samp_time = pickle.load(firstp)
-
-for dataNum in os.listdir('{}/minion_data/FIN/'.format(configDir)):
-    if dataNum.endswith('_TEMPPRES-FIN.txt'):
-        samp_count = samp_count + 1
 
 samp_time = "{}-{}".format(samp_count, samp_time)
 
@@ -88,11 +98,9 @@ TotalSamples = Stime*60*60*Srate
 
 time.sleep(1)
 
-if len(os.listdir('{}/minion_data/FIN'.format(configDir))) == 0:
-    BURN_WIRE = True
-    GPIO.output(BURN,1)
-
 file = open(file_name,"a+")
+
+file.write("{}_TEMPPRES.txt".format(samp_time))
 
 if iniP30 == True:
 
@@ -102,17 +110,16 @@ if iniP30 == True:
         print("Failed to initialize P30 sensor!")
         exit(1)
 
+    depth_factor = .01
+    surface_offset = 10
+
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = Psensor.pressure()
+        Pres_ini = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
     else:
         Pres_ini = "Broken"
 
-    file.write("T+P MS5837_30BA P30 @ %s\r\n" % samp_time)
-    file.write("Pressure(mbar),Temp(C) \r\n")
-
-    print("Pressure 30: {} Bar").format(Pres_ini)
-
+    file.write("Pressure(dbar),Temp(C)")
 
 if iniP100 == True:
 
@@ -121,16 +128,17 @@ if iniP100 == True:
     if not Psensor.init():
         print("Failed to initialize P100 sensor!")
         exit(1)
+
+    depth_factor = 10
+    surface_offset = 0
+
     # We have to read values from sensor to update pressure and temperature
     if Psensor.read():
-        Pres_ini = Psensor.pressure()
+        Pres_ini = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
     else:
         Pres_ini = "Broken"
 
-    file.write("T+P KellerLD P100 @ %s\r\n" % samp_time)
-    file.write("Pressure(mbar),Temp(C) \r\n")
-
-    print("Pressure 100: {} Bar").format(Pres_ini)
+    file.write("Pressure(dbar),Temp(C)")
 
 if iniTmp == True:
 
@@ -141,8 +149,7 @@ if iniTmp == True:
         print("Error initializing Temperature sensor")
         exit(1)
 
-    file.write("and TempTSYS01")
-    file.write("Pressure(mbar), Temp(C), TempTSYS01(C) \r\n")
+    file.write(", TempTSYS01(C)")
 
 file.close()
 
@@ -159,20 +166,22 @@ if __name__ == '__main__':
 #        GPIO.output(BURN,1)
 #        os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py')
 
-    if len(os.listdir('{}/minion_data/FIN/'.format(configDir))) <= 1:
+    if samp_count == TotalCycles + 1:
         GPIO.output(BURN,1)
 
         if iniImg == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/Minion_image_IF.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/Minion_image_IF.py &')
 
         if iniO2 == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/OXYBASE_RS232_IF.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/OXYBASE_RS232_IF.py &')
 
         if iniAcc == True:
-            os.system('sudo python /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
+            os.system('sudo python3 /home/pi/Documents/Minion_scripts/ACC_100Hz_IF.py &')
 
         # Spew readings
         while(NumSamples <= TotalSamples):
+
+            tic = time.perf_counter()
 
             file = open(file_name,"a")
 
@@ -181,12 +190,11 @@ if __name__ == '__main__':
             if iniP100 or iniP30 == True:
 
                 if Psensor.read():
-                    Ppressure = Psensor.pressure()
-                    Ptemperature = Psensor.temperature()
+                    Ppressure = round((Psensor.pressure() * depth_factor) - surface_offset, 3)
+                    Ptemperature = round(Psensor.temperature(),3)
                     Pres_data = "{},{},".format(Ppressure, Ptemperature)
                     print("Pressure sensor data: {}".format(Pres_data))
                     sensor_string = "{}{}".format(sensor_string,Pres_data)
-                    Pres_ini = Ppressure
 
                 else:
                     print('Pressure Sensor ded')
@@ -203,7 +211,7 @@ if __name__ == '__main__':
                     print("Error reading sensor")
                     iniTmp = False
 
-                Temp_acc = sensor_temp.temperature()
+                Temp_acc = round(sensor_temp.temperature(),4)
 
                 print("Temperature_accurate: {} C".format(Temp_acc))
 
@@ -214,7 +222,15 @@ if __name__ == '__main__':
 
             NumSamples = NumSamples + 1
 
-            time.sleep(Sf)
+            toc = time.perf_counter()
+
+            timeS = toc - tic
+
+            if timeS >= Sf:
+
+                timeS = Sf
+
+            time.sleep(Sf - timeS)
 
 
         os.system('sudo python /home/pi/Documents/Minion_scripts/Iridium_gps.py &')
