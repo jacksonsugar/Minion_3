@@ -249,7 +249,7 @@ os.system('sudo cp source/web_iface/sites-enabled/default /etc/nginx/sites-enabl
 
 os.system('sudo /etc/init.d/nginx reload')
 
-os.system('sudo cp source/web_iface/*.py source/web_iface/*.php source/web_iface/*.png /var/www/html/')
+os.system('sudo cp source/web_iface/*.py source/web_iface/*.php source/web_iface/*.png source/web_iface/*.js /var/www/html/')
 
 os.system('sudo rm -r /var/www/html/index.nginx-debian.html')
 
