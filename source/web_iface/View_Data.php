@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>View Data XXX</title>
+<title>View Data 61</title>
 <style>
     h1 {text-align: center;}
     body {
@@ -16,7 +16,7 @@
 </style>
 </head>
 <body>
-<h1> MINION XXX DATA </h1>
+<h1> MINION 61 DATA </h1>
 
 <fieldset>
 <h2> minion_data/ </h2>
@@ -77,6 +77,15 @@ echo '</pre>';
 
 ?>
 </fieldset>
+<br>
+<br>
+<?php
+
+$command = escapeshellcmd('sudo python /var/www/html/get_telemetry.py');
+$output = shell_exec($command);
+echo $output;
+
+?>
 <br>
 <br>
 <form action="/Minion_Download.php" method='post'>
