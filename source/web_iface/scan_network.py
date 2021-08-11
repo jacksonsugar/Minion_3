@@ -20,15 +20,12 @@ for line in scan.split('Nmap scan '):
         devs = True
         line = line.strip("report for ")
         line = line.split("\n")
-        IPs.append(line[0])
-        print("Minion @ {}\r\n".format(IPs))
-
-output = ''.join(IPs)
+        print("Minion @ <a target='_blank' rel='noopener noreferrer' href='http://{}/index.php'>{}</a>\r\n".format(line[0],line[0]))
 
 if devs == True:
-    print("Devices attached to the {}:\r\n\r\n".format(hub[0]))
-
-    print(output)
+    print("On the {}!\r\n\r\n".format(hub[0]))
 
 else:
     print("No other devices attached to the {}.".format(hub[0]))
+
+
