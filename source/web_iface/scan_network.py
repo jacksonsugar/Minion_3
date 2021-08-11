@@ -23,7 +23,7 @@ for line in scan.split('Nmap scan '):
         print("Minion @ <a target='_blank' rel='noopener noreferrer' href='http://{}/index.php'>{}</a>\r\n".format(line[0],line[0]))
 
 if devs == True:
-    print("On the {}!\r\n\r\n".format(hub[0]))
+    print("On the {}!\r\n".format(hub[0]))
 
 else:
     print("No other devices attached to the {}.".format(hub[0]))
