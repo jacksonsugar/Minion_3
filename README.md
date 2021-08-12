@@ -4,11 +4,11 @@
 
 &emsp; https://www.raspberrypi.org/software/
 
-&nbsp; I highly recomend the raspberry pi foundation's rpi-imager
+&emsp; I highly recomend the raspberry pi foundation's rpi-imager
 
 ### Power Pi via micro-USB
 
-At this stage you should have:
+&emsp;At this stage you should have:
 
 - SD card in Pi
 - Wired LAN
@@ -18,56 +18,56 @@ At this stage you should have:
 
 ### Follow on screen instructions
 
-Install raspbian as normal
+&emsp;Install raspbian as normal
 
-Choose any password for the device
+&emsp;Choose any password for the device
 
-Skip wireless setup
+&emsp;Skip wireless setup
 
-When prompted, update the computer
+&emsp;When prompted, update the computer
 
-Allow it to reboot
+&emsp;Allow it to reboot
 
 ### Clone Repo and Install
 
-Once the Pi reboots, open a terminal and type this command to download the repo:
+&emsp;Once the Pi reboots, open a terminal and type this command to download the repo:
 
 
   `~$ sudo git clone https://github.com/jacksonsugar/Minion_3.git`
   
-Now navigate into the folder and begin the install process:
+&emsp;Now navigate into the folder and begin the install process:
   
   `~$ cd Minion_3/`
   
   `~/Minion/$ sudo python Minion_install.py`
   
-  Assign the device with an IP address between 2 and 250
+  &emsp;Assign the device with an IP address between 2 and 250
   
-  Enter [Y] to enable debug mode
+  &emsp;Enter [Y] to enable debug mode
   
-  Enter [N] to choose to have files saved to the Desktop
+  &emsp;Enter [N] to choose to have files saved to the Desktop
   
-  Allow the installer to finish and it will turn the Pi off.
+  &emsp;Allow the installer to finish and it will turn the Pi off.
   
-  Finally power on the Minion_Hub and Master_Hub
+  &emsp;Finally power on the Minion_Hub and Master_Hub
   
   ### Attach HAT and power 12V via the 4 pin JST
   
-  The Pi will boot up and complete it's installation (setting the clock)
+  &emsp;The Pi will boot up and complete it's installation (setting the clock)
   
-  Then the Pi will reboot
+  &emsp;Then the Pi will reboot
   
-  Once the Pi reboots you may disconnect the LAN network cable
+  &emsp;Once the Pi reboots you may disconnect the LAN network cable
   
   ### Test if the Minion is working
   
-  Connect to the Minion_Hub with your cell phone or another computer:
+  &emsp;Connect to the Minion_Hub with your cell phone or another computer:
   
-  Open a brouser and type the IP of the Minion
+  &emsp;Open a brouser and type the IP of the Minion
   
-  (i.e. 192.168.0.XXX)
+  &emsp;(i.e. 192.168.0.XXX)
   
-  If you are greeted with a website then you did it!
+  &emsp;If you are greeted with a website then you did it!
   
   
   
