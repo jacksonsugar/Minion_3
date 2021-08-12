@@ -25,7 +25,7 @@
 <br>
 <h3>Step 2: Turn Minion off before deployment.</h3>
 <form method='post' action=''>
-<input type='submit' name='shutdown' value='Set Minion 52 to Sleep' />
+<input type='submit' name='shutdown' value='Set Minion XXX to Sleep' />
 </form>
 <br>
 <h3>Step 3: After 30 seconds, attach the magent to keep the Minion off.</h3>
