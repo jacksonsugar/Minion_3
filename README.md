@@ -1,4 +1,4 @@
-# Minion 3 Install instructions
+# Minion 3 Install Instructions
 
 Prepare a fresh install of raspbian on micro-sd card:
 
