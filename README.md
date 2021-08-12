@@ -4,7 +4,7 @@ Prepare a fresh install of raspbian on micro-sd card:
 
   https://www.raspberrypi.org/software/
 
-  I highly recomend the raspberry pi foundation's rpi-imager
+  > I highly recomend the raspberry pi foundation's rpi-imager
 
 
 
