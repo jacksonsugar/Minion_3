@@ -9,11 +9,11 @@ Prepare a fresh install of raspbian on micro-sd card:
 
 
 To use:
-
-  `~$ sudo git clone https://github.com/jacksonsugar/Minion_3.git`
+```
+  ~$ sudo git clone https://github.com/jacksonsugar/Minion_3.git
   
-  `~$ cd Minion_3/`
+  ~$ cd Minion_3/
   
-  `~/Minion/$ sudo python Minion_install.py`
-  
+  ~/Minion/$ sudo python Minion_install.py
+```
   
