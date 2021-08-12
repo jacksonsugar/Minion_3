@@ -41,6 +41,10 @@ Now navigate into the folder and begin the install process:
   
   `~/Minion/$ sudo python Minion_install.py`
   
+  Assign the device with an IP address between 2 and 250
+  
+  Enter [Yes] to enable debug mode
+  
   
   
   
