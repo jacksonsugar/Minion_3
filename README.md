@@ -43,13 +43,31 @@ Now navigate into the folder and begin the install process:
   
   Assign the device with an IP address between 2 and 250
   
-  Enter [Yes] to enable debug mode
+  Enter [Y] to enable debug mode
   
+  Enter [N] to choose to have files saved to the Desktop
   
+  Allow the installer to finish and it will turn the Pi off.
   
+  Finally power on the Minion_Hub and Master_Hub
   
+  ### Attach HAT and power 12V via the 4 pin JST
   
+  The Pi will boot up and complete it's installation (setting the clock)
   
+  Then the Pi will reboot
+  
+  Once the Pi reboots you may disconnect the LAN network cable
+  
+  ### Test if the Minion is working
+  
+  Connect to the Minion_Hub with your cell phone or another computer:
+  
+  Open a brouser and type the IP of the Minion
+  
+  (i.e. 192.168.0.XXX)
+  
+  If you are greeted with a website then you did it!
   
   
   
