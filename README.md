@@ -1,6 +1,6 @@
 # Minion 3 Install Instructions
 
-Prepare a fresh install of raspbian on micro-sd card:
+#### Prepare a fresh install of raspbian on micro-sd card:
 
   https://www.raspberrypi.org/software/
 
