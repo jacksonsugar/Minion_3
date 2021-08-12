@@ -4,7 +4,7 @@
 
 https://www.raspberrypi.org/software/
 
-I highly recomend the raspberry pi foundation's rpi-imager
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I highly recomend the raspberry pi foundation's rpi-imager
 
 ### Power Pi via micro-USB
 
