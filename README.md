@@ -47,7 +47,9 @@
   
   &emsp;Enter [N] to choose to have files saved to the Desktop
   
-  &emsp;Allow the installer to finish and it will turn the Pi off.
+  &emsp;Allow the installer to finish and it will turn the Pi off
+  
+  &emsp;Disconnect USB power from the Pi
   
   &emsp;Finally power on the Minion_Hub and Master_Hub
   
