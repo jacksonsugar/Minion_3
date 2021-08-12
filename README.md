@@ -2,9 +2,9 @@
 
 ### Prepare a fresh install of raspbian on micro-sd card:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; https://www.raspberrypi.org/software/
+&emsp; https://www.raspberrypi.org/software/
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; I highly recomend the raspberry pi foundation's rpi-imager
+&nbsp; I highly recomend the raspberry pi foundation's rpi-imager
 
 ### Power Pi via micro-USB
 
