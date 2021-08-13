@@ -35,7 +35,7 @@
 <?php
 if(isset($_POST['pressure'])){
 
-$command = escapeshellcmd('python /home/pi/Documents/Minion_scripts/Pressure_test.py');
+$command = escapeshellcmd('sudo python3 /home/pi/Documents/Minion_scripts/Pressure_test.py');
 $output_pres = shell_exec($command);
 echo "Pressure reading: " . $output_pres . " dbar";
 
@@ -52,7 +52,7 @@ echo "Pressure reading: " . $output_pres . " dbar";
 <?php
 if(isset($_POST['temperature'])){
 
-$command = escapeshellcmd('sudo python /home/pi/Documents/Minion_scripts/Temperature_test.py');
+$command = escapeshellcmd('sudo python3 /home/pi/Documents/Minion_scripts/Temperature_test.py');
 $output_temp = shell_exec($command);
 echo "Temperature reading: " . $output_temp . " C";
 
