@@ -123,7 +123,7 @@ scriptNames = ["TempPres.py", "Minion_image.py","Minion_image_IF.py","OXYBASE_RS
 
 if __name__ == '__main__':
 
-    if iniP30 == True or iniP100:
+    if iniP30 == True or iniP100 == True:
         os.system('sudo python3 /home/pi/Documents/Minion_scripts/TempPres.py &')
 
     if iniImg == True:
