@@ -1,3 +1,7 @@
+# THIS PROJECT HAS MOVED
+
+# Find it here: https://github.com/melissaomand/Minion_3
+
 # Minion 3 Install Instructions
 
 ### Prepare a fresh install of raspbian on micro-sd card:
